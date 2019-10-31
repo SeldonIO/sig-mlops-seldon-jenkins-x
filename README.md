@@ -46,6 +46,22 @@ Let's have a look at the model we're using for text classification.
 
 
 ```python
+%%writefile requirements-dev.txt
+scikit-learn==0.20.1
+pytest==5.1.1
+joblib==0.13.2
+```
+
+    Overwriting requirements-dev.txt
+
+
+
+```python
+!pip install requiremnets-dev.txt
+```
+
+
+```python
 from sklearn.datasets import fetch_20newsgroups
 categories = ['alt.atheism', 'soc.religion.christian',
               'comp.graphics', 'sci.med']
@@ -154,23 +170,249 @@ joblib.dump(text_clf, "model.joblib")
 
 
 ```python
+!gsutil mb gs://news_classifier/
+```
+
+    Creating gs://news_classifier/...
+
+
+
+```python
+!gsutil cp model.joblib gs://news_classifier/model/model.joblib
+```
+
+    Copying file://model.joblib [Content-Type=application/octet-stream]...
+    / [1 files][  4.4 MiB/  4.4 MiB]                                                
+    Operation completed over 1 objects/4.4 MiB.                                      
+
+
+
+```python
+!gsutil acl ch -r -u AllUsers:R gs://news_classifier
+```
+
+    Updated ACL on gs://news_classifier/model
+    Updated ACL on gs://news_classifier/model.joblib
+    Updated ACL on gs://news_classifier/model/model.joblib
+
+
+
+```python
 !mkdir -p src/
 ```
 
 
 ```python
-%%writefile src/ModelWrapper.py
+%%writefile src/SklearnServer.py
 
+import joblib, logging
 from seldon_core.storage import Storage
-import joblib
 
-class ModelWrapper:
+class SklearnServer:
     def __init__(self, model_uri):
-        model_file = os.path.join(Storage.download(model_uri), JOBLIB_FILE)
-        self._model = joblib.load(model_file)
+        output_dir = Storage.download(model_uri)
+        self._model = joblib.load(f"{output_dir}/model.joblib")
 
-        
+    def predict(self, data, feature_names=[], metadata={}):
+        logging.info(data)
+
+        prediction = self._model.predict(data)
+
+        logging.info(prediction)
+
+        return prediction
 ```
+
+    Overwriting src/SklearnServer.py
+
+
+
+```python
+%%writefile src/requirements.txt
+scikit-learn==0.20.1
+joblib==0.13.2
+```
+
+    Overwriting src/requirements.txt
+
+
+
+```python
+%%writefile src/seldon_model.conf
+MODEL_NAME=SklearnServer
+API_TYPE=REST
+SERVICE_TYPE=MODEL
+PERSISTENCE=0
+```
+
+    Overwriting src/seldon_model.conf
+
+
+
+```bash
+%%bash
+SELDON_BASE_WRAPPER="seldonio/seldon-core-s2i-python36:0.12"
+s2i build src/. $SELDON_BASE_WRAPPER sklearn-server:0.1 \
+    --environment-file src/seldon_model.conf
+```
+
+    ---> Installing application source...
+    ---> Installing dependencies ...
+    Looking in links: /whl
+    Collecting scikit-learn==0.20.1 (from -r requirements.txt (line 1))
+      WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
+    Downloading https://files.pythonhosted.org/packages/10/26/d04320c3edf2d59b1fcd0720b46753d4d603a76e68d8ad10a9b92ab06db2/scikit_learn-0.20.1-cp36-cp36m-manylinux1_x86_64.whl (5.4MB)
+    Collecting joblib==0.13.2 (from -r requirements.txt (line 2))
+      WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
+    Downloading https://files.pythonhosted.org/packages/cd/c1/50a758e8247561e58cb87305b1e90b171b8c767b15b12a1734001f41d356/joblib-0.13.2-py2.py3-none-any.whl (278kB)
+    Requirement already satisfied: numpy>=1.8.2 in /usr/local/lib/python3.6/site-packages (from scikit-learn==0.20.1->-r requirements.txt (line 1)) (1.17.2)
+    Collecting scipy>=0.13.3 (from scikit-learn==0.20.1->-r requirements.txt (line 1))
+      WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
+    Downloading https://files.pythonhosted.org/packages/29/50/a552a5aff252ae915f522e44642bb49a7b7b31677f9580cfd11bcc869976/scipy-1.3.1-cp36-cp36m-manylinux1_x86_64.whl (25.2MB)
+    Installing collected packages: scipy, scikit-learn, joblib
+    Successfully installed joblib-0.13.2 scikit-learn-0.20.1 scipy-1.3.1
+    WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
+    WARNING: You are using pip version 19.1, however version 19.3.1 is available.
+    You should consider upgrading via the 'pip install --upgrade pip' command.
+    Build completed successfully
+
+
+
+```bash
+%%bash
+YOUR_DOCKER_USERNAME="axsauze"
+
+docker tag sklearn-server:0.1 $YOUR_DOCKER_USERNAME/sklearn-server:0.1
+docker push $YOUR_DOCKER_USERNAME/sklearn-server:0.1
+```
+
+    Process is interrupted.
+
+
+
+```python
+%%writefile test_deployment.yaml
+apiVersion: machinelearning.seldon.io/v1alpha2
+kind: SeldonDeployment
+metadata:
+  name: news-classifier-server
+  namespace: default
+  creationTimestamp: 
+spec:
+  name: news-classifier-server
+  predictors:
+  - name: default
+    graph:
+      name: news-classifier-server-processor
+      endpoint:
+        type: REST
+      type: MODEL
+      children: []
+      parameters:
+      - name: model_uri
+        type: STRING
+        value: "gs://news_classifier/model/"
+    componentSpecs:
+    - metadata:
+        creationTimestamp: '2019-10-12T16:00:00Z'
+      spec:
+        containers:
+        - image: axsauze/sklearn-server:0.1
+          name: news-classifier-server-processor
+          env:
+          - name: SELDON_LOG_LEVEL
+            value: DEBUG
+        terminationGracePeriodSeconds: 1
+    replicas: 1
+    engineResources: {}
+    svcOrchSpec: {}
+    traffic: 100
+    explainer:
+      containerSpec:
+        name: ''
+        resources: {}
+  annotations:
+    seldon.io/engine-seldon-log-messages-externally: 'true'
+status: {}
+```
+
+    Overwriting test_deployment.yaml
+
+
+
+```python
+!kubectl apply -f test_deployment.yaml
+```
+
+    seldondeployment.machinelearning.seldon.io/news-classifier-server created
+
+
+
+```python
+??sc.predict
+```
+
+
+```python
+from seldon_core.seldon_client import SeldonClient
+import numpy as np
+
+url = !kubectl get svc ambassador -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+
+sc = SeldonClient(
+    gateway="ambassador", 
+    gateway_endpoint="localhost:80",
+    deployment_name="news-classifier-server",
+    payload_type="ndarray",
+    namespace="default",
+    transport="rest")
+
+response = sc.predict(data=np.array([twenty_test.data[0]]))
+
+response.response.data
+```
+
+
+
+
+    ndarray {
+      values {
+        number_value: 2.0
+      }
+    }
+
+
+
+
+```bash
+%%bash
+curl -X POST -H 'Content-Type: application/json' \
+     -d "{'data': {'names': ['text'], 'ndarray': ['Hello world this is a test']}}" \
+    http://localhost/seldon/default/news-classifier-server/api/v0.1/predictions
+```
+
+    {
+      "meta": {
+        "puid": "so6n21pkf70fm66eka28lc63cr",
+        "tags": {
+        },
+        "routing": {
+        },
+        "requestPath": {
+          "news-classifier-server-processor": "axsauze/sklearn-server:0.1"
+        },
+        "metrics": []
+      },
+      "data": {
+        "names": [],
+        "ndarray": [2.0]
+      }
+    }
+
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                     Dload  Upload   Total   Spent    Left  Speed
+    100   350  100   278  100    72   7942   2057 --:--:-- --:--:-- --:--:-- 10294
+
 
 
 ```python
