@@ -291,7 +291,12 @@ docker push $YOUR_DOCKER_USERNAME/sklearn-server:0.1
 
 
 ```python
-%%writefile test_deployment.yaml
+!mkdir -p gitops
+```
+
+
+```python
+%%writefile gitops/test_deployment.yaml
 apiVersion: machinelearning.seldon.io/v1alpha2
 kind: SeldonDeployment
 metadata:
@@ -336,21 +341,16 @@ spec:
 status: {}
 ```
 
-    Overwriting test_deployment.yaml
+    Writing gitops/test_deployment.yaml
 
 
 
 ```python
-!kubectl apply -f test_deployment.yaml
+!kubectl apply -f gitops/test_deployment.yaml
 ```
 
     seldondeployment.machinelearning.seldon.io/news-classifier-server created
 
-
-
-```python
-??sc.predict
-```
 
 
 ```python
@@ -416,5 +416,71 @@ curl -X POST -H 'Content-Type: application/json' \
 
 
 ```python
-
+!kubectl delete -f gitops/test_deployment.yaml
 ```
+
+    seldondeployment.machinelearning.seldon.io "news-classifier-server" deleted
+
+
+# Setting up CI before CD
+
+We have now separated our model development into two chunks: 
+
+* The first one involves the creation of a model serve, and the second one involves the CI of the model server, and the second involves the deployment of models that create the model.
+
+
+## Using the Jenkins X pipeline
+
+In order to do this we will be able to first run some tests and the push to the docker repo.
+
+For this we will be leveraging the Jenkins X file, we'll first start with a simple file that just runs the tests:
+
+
+```python
+%%writefile jenkins-x.yml
+buildPack: none
+pipelineConfig:
+  pipelines:
+    release:
+      pipeline:
+        agent:
+          image: seldonio/core-builder:0.4
+        stages:
+        - name: build-and-test
+          parallel:
+          - name: test-sklearn-server
+            steps:
+            - name: run-tests
+              command: make
+              args:
+              - install_dev
+              - test
+    pullRequest:
+      pipeline:
+        agent:
+          image: seldonio/core-builder:0.4
+        stages:
+        - name: build-and-test
+          parallel:
+          - name: test-sklearn-server
+            steps:
+            - name: run-tests
+              command: make
+              args:
+              - install_dev
+              - test
+```
+
+    Writing jenkins-x.yml
+
+
+Now we want to import the jenkins project. 
+
+For this we need to make sure that you have pushed this repository into a github repo which the Jenkins Bot already has permissions.
+
+
+```python
+!jx import --no-draft=true
+```
+
+Now we can actually see that when the 
