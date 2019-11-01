@@ -596,13 +596,75 @@ Now that we're able to build some tests, we want to update the images so we can 
 
 For this, we will have to add a couple of things, including:
 
-* The steps in the `jenkins-x.yml` file that would allow us to build and push the image
-* The config in the `jenkins-x.yml` to provide docker authentications (to push images)
-* A script that starts a docker daemon and then builds+psuhes the images
+1. The task in the `jenkins-x.yml` file that would allow us to build and push the image
+2. The config in the `jenkins-x.yml` to provide docker authentications (to push images)
+3. A script that starts a docker daemon and then builds+psuhes the images
 
+#### JX Task to Build and Push image
 
-```python
+For this, we would just have to append the following task in our jenkins file:
+    
+```
+    - name: build-and-push-images
+      command: bash
+      args:
+      - assets/scripts/build_and_push_docker_daemon.sh
+```
 
+#### Config to provide docker authentication
+
+This piece is slightly more extensive, as we will need to use Docker to build out containers due to the dependency on `s2i` to build the model wrappers.
+
+First we need to define the volumes that we'll be mounting to the container.
+
+The first few volumes before basically consist of the core components that docker will need to be able to run.
+```
+          volumes:
+            - name: modules
+              hostPath:
+                path: /lib/modules
+                type: Directory
+            - name: cgroup
+              hostPath:
+                path: /sys/fs/cgroup
+                type: Directory
+            - name: dind-storage
+              emptyDir: {}
+```
+We also want to mount the docker credentials which we will generate in the next step.
+```
+            - name: jenkins-docker-config-volume
+              secret:
+                items:
+                - key: config.json
+                  path: config.json
+                secretName: jenkins-docker-cfg
+```
+Once we've created the volumes, now we just need to mount them. This can be done as follows:
+```
+        options:
+          containerOptions:
+            volumeMounts:
+              - mountPath: /lib/modules
+                name: modules
+                readOnly: true
+              - mountPath: /sys/fs/cgroup
+                name: cgroup
+              - name: dind-storage
+                mountPath: /var/lib/docker                 
+```
+And finally we also mount the docker auth configuration so we don't have to run `docker login`:
+```
+              - mountPath: /builder/home/.docker
+                name: jenkins-docker-config-volume
+```
+
+And to finalise, we need to make sure that the pod can run with privileged context.
+
+The reason why this is required is in order to be able to run the docker daemon:
+```
+            securityContext:
+              privileged: true
 ```
 
 
