@@ -1,0 +1,27 @@
+buildPack: none
+pipelineConfig:
+  pipelines:
+    release:
+      pipeline:
+        agent:
+          image: seldonio/core-builder:0.4
+        stages:
+          - name: test-sklearn-server
+            steps:
+            - name: run-tests
+              command: make
+              args:
+              - install_dev
+              - test
+    pullRequest:
+      pipeline:
+        agent:
+          image: seldonio/core-builder:0.4
+        stages:
+          - name: test-sklearn-server
+            steps:
+            - name: run-tests
+              command: make
+              args:
+              - install_dev
+              - test
