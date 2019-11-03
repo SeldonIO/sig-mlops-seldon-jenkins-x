@@ -56,7 +56,11 @@ Now we want to start setting up our repo. For this we will create the following 
 
 ## Let's train a model locally
 
-Let's have a look at the model we're using for text classification.
+First we will train a machine learning model, which will help us classify news across multiple categories.
+
+### Install dependencies 
+
+We will need the following dependencies in order to run the Python code:
 
 
 ```python
@@ -69,10 +73,18 @@ joblib==0.13.2
     Overwriting requirements-dev.txt
 
 
+We can now install the dependencies using the make command:
+
 
 ```python
 !make install_dev
 ```
+
+### Download the ML data
+
+Now that we have all the dependencies we can proceed to download the data.
+
+We will download the news stories dataset, and we'll be attempting to classify across the four classes below.
 
 
 ```python
@@ -94,6 +106,10 @@ print("\n".join(twenty_train.data[0].split("\n")[:3]))
     Subject: Converting images to HP LaserJet III?
     Nntp-Posting-Host: hampton
 
+
+### Train a model
+
+Now that we've downloaded the data, we can train the ML model using a simple pipeline with basic text pre-processors and a Multiclass naive bayes classifier
 
 
 ```python
@@ -133,9 +149,14 @@ text_clf.fit(twenty_train.data, twenty_train.target)
 
 
 
+### Test single prediction
+
+Now that we've trained our model we can use it to predict from un-seen data.
+
+We can see below that the model is able to predict the first datapoint in the dataset correctly.
+
 
 ```python
-# Let's try one
 idx = 0
 print(f"CONTENT:{twenty_test.data[idx][35:230]}\n\n-----------\n")
 print(f"PREDICTED CLASS: {categories[twenty_test.target[idx]]}")
@@ -154,6 +175,10 @@ print(f"PREDICTED CLASS: {categories[twenty_test.target[idx]]}")
     PREDICTED CLASS: comp.graphics
 
 
+### Print accuracy
+
+We can print the accuracy of the model by running the test data and counting the number of correct classes.
+
 
 ```python
 import numpy as np
@@ -167,7 +192,11 @@ print(f"Accuracy: {np.mean(predicted == twenty_test.target):.2f}")
 
 ## Deploy the model
 
-Now we want to be able to deploy the model we just trained
+Now we want to be able to deploy the model we just trained. For this we'll follow the standard steps to wrap the model using Seldon.
+
+### Save the trained model
+
+First we have to save the trained model in the `src/` folder, which our wrapper will load
 
 
 ```python
@@ -181,6 +210,10 @@ joblib.dump(text_clf, "src/model.joblib")
     ['src/model.joblib']
 
 
+
+### Build wrapper that loads model
+
+Now we can actually write a simple wrapper that basically loads the model and exposes the logic through the `predict` function.
 
 
 ```python
@@ -204,6 +237,12 @@ class SklearnServer:
 
     Overwriting src/SklearnServer.py
 
+
+### Test the wrapper
+
+It's best practice to write a set of unit tests to make sure that our wrapper works as expected.
+
+We'll write a single unit test and then we'll run it using Pytest
 
 
 ```python
@@ -246,6 +285,10 @@ def test_sklearn_server():
     [32m[1m============================== 1 passed in 1.72s ===============================[0m
 
 
+### Define config files
+
+Now that our wrapper works as expected, we just need to write a set of configuration files, including dependencies and the type of model.
+
 
 ```python
 %%writefile src/requirements.txt
@@ -267,6 +310,10 @@ PERSISTENCE=0
 
     Overwriting src/seldon_model.conf
 
+
+### Build container with s2i untils
+
+Now we leverage the `s2i` util to convert our wrapped model into a fully fledged REST server that exposes the logic through an API.
 
 
 ```bash
@@ -303,8 +350,12 @@ s2i build src/. $SELDON_BASE_WRAPPER sklearn-server:0.1 \
 YOUR_DOCKER_USERNAME="seldonio"
 
 docker tag sklearn-server:0.1 $YOUR_DOCKER_USERNAME/sklearn-server:0.1
-# docker push $YOUR_DOCKER_USERNAME/sklearn-server:0.1
+docker push $YOUR_DOCKER_USERNAME/sklearn-server:0.1
 ```
+
+### Deploy model 
+
+Now that we've built our model, we can push it and deploy it to our kubernetes cluster for evaluation
 
 
 ```python
@@ -356,11 +407,17 @@ docker tag sklearn-server:0.1 $YOUR_DOCKER_USERNAME/sklearn-server:0.1
 
 
 ```python
-!kubectl apply -f gitops/test_deployment.yaml
+!helm install charts/sklearn-model-server
 ```
 
     seldondeployment.machinelearning.seldon.io/news-classifier-server created
 
+
+### Test server by sending request
+
+Now that we've deployed our model, we can test it by sending a POST request. 
+
+This can be done using our SeldonCore Python client, or by just sending it through `curl`. Both are shown below:
 
 
 ```python
@@ -426,7 +483,7 @@ curl -X POST -H 'Content-Type: application/json' \
 
 
 ```python
-!kubectl delete -f gitops/test_deployment.yaml
+!helm delete charts/sklearn-model-server
 ```
 
     seldondeployment.machinelearning.seldon.io "news-classifier-server" deleted
