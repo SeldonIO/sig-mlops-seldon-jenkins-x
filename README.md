@@ -6,15 +6,27 @@ This tutorial provides an end-to-end tutorial that shows you how to build you ML
 * Seldon Core is a machine learning deployment & orchestration engine in Kubernetes
 * Jenkins X provides automated CI+CD for Kubernetes with Preview Environments on Pull Requests
 
+## Current limitations
 
+### Prepackaged Model Servers vs Language Wrappers
+
+Ideally we would be able to show in this tutorial two workflows: 1) creating a model server, and 2) deploying multiple applications with that model server. At this point in time, there is only one workflow in this repository, which consists of building and deploying a single Seldon Model using a language wrapper, which means that the docker image is built every time. 
+
+### Quickstart and buildpack
+
+A lot of the logic in this tutorial could simplified by creating a quickstart project and possibly a build pack (although most of the logic can be built as part of a build pack initially).
+
+### Docker builds in cluster required
+
+Currently, the images are built and pushed using a pod with a docker daemon, this is because of the current dependency Seldon has on S2i (Source-to-image) to build the image wrappers.
+
+Furthermore, docker is also required to run the end-to-end tests, which leverage KIND (kubernetes in docker) to spin up a test kubernetes cluster inside of a Kubernetes Pod.
 
 ## Intuitive explanation
 
-Before we proceed, we want to understand what we will be trying to achieve. 
+In this project, we will be building an MLOps workflow to deploy your production machine learning models by buiding a re-usable pre-packaged model server through CI, and then deploying individual models using CD.
 
-And what better way of doing this than by diving into an architectural diagram.
-
-[TODO ARCHITECTURE]
+[TODO: ARCHITECTURAL DIAGRAM]
 
 ## Requirements
 
