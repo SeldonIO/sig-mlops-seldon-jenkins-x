@@ -667,6 +667,123 @@ The reason why this is required is in order to be able to run the docker daemon:
               privileged: true
 ```
 
+### Updating Jenkins X file and testing
+
+Now that we've gotten a breakdown of the different additions for the `jenkins-x.yml` file, we can update it:
+
+
+```python
+%%writefile jenkins-x.yml
+buildPack: none
+pipelineConfig:
+  pipelines:
+    release:
+      pipeline:
+        agent:
+          image: seldonio/core-builder:0.4
+        stages:
+        - name: build-and-test
+          parallel:
+          - name: test-and-deploy-sklearn-server
+            steps:
+            - name: test-sklearn-server
+              steps:
+              - name: run-tests
+                command: make
+                args:
+                - install_dev
+                - test
+            - name: build-and-push-images
+              command: bash
+              args:
+              - assets/scripts/build_and_push_docker_daemon.sh
+        options:
+          containerOptions:
+            volumeMounts:
+              - mountPath: /lib/modules
+                name: modules
+                readOnly: true
+              - mountPath: /sys/fs/cgroup
+                name: cgroup
+              - name: dind-storage
+                mountPath: /var/lib/docker
+              - mountPath: /builder/home/.docker
+                name: jenkins-docker-config-volume
+            securityContext:
+              privileged: true
+          volumes:
+            - name: modules
+              hostPath:
+                path: /lib/modules
+                type: Directory
+            - name: cgroup
+              hostPath:
+                path: /sys/fs/cgroup
+                type: Directory
+            - name: dind-storage
+              emptyDir: {}
+            - name: jenkins-docker-config-volume
+              secret:
+                items:
+                - key: config.json
+                  path: config.json
+                secretName: jenkins-docker-cfg
+    pullRequest:
+      pipeline:
+        agent:
+          image: seldonio/core-builder:0.4
+        stages:
+        - name: build-and-test
+          parallel:
+          - name: test-and-deploy-sklearn-server
+            steps:
+            - name: test-sklearn-server
+              steps:
+              - name: run-tests
+                command: make
+                args:
+                - install_dev
+                - test
+            - name: build-and-push-images
+              command: bash
+              args:
+              - assets/scripts/build_and_push_docker_daemon.sh
+        options:
+          containerOptions:
+            volumeMounts:
+              - mountPath: /lib/modules
+                name: modules
+                readOnly: true
+              - mountPath: /sys/fs/cgroup
+                name: cgroup
+              - name: dind-storage
+                mountPath: /var/lib/docker
+              - mountPath: /builder/home/.docker
+                name: jenkins-docker-config-volume
+            securityContext:
+              privileged: true
+          volumes:
+            - name: modules
+              hostPath:
+                path: /lib/modules
+                type: Directory
+            - name: cgroup
+              hostPath:
+                path: /sys/fs/cgroup
+                type: Directory
+            - name: dind-storage
+              emptyDir: {}
+            - name: jenkins-docker-config-volume
+              secret:
+                items:
+                - key: config.json
+                  path: config.json
+                secretName: jenkins-docker-cfg
+```
+
+    Overwriting jenkins-x.yml
+
+
 
 ```python
 
