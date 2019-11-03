@@ -1,15 +1,13 @@
 apiVersion: machinelearning.seldon.io/v1alpha2
 kind: SeldonDeployment
 metadata:
-  name: news-classifier-server
-  namespace: default
-  creationTimestamp: 
+  name: {{ .Values.model.name }}
 spec:
-  name: news-classifier-server
+  name: {{ .Values.model.name }}
   predictors:
   - name: default
     graph:
-      name: news-classifier-server-processor
+      name: {{ .Values.model.name }}-processor
       endpoint:
         type: REST
       type: MODEL
@@ -19,15 +17,16 @@ spec:
         type: STRING
         value: "gs://news_classifier/model/"
     componentSpecs:
-    - metadata:
-        creationTimestamp: '2019-10-12T16:00:00Z'
-      spec:
+    - spec:
         containers:
-        - image: axsauze/sklearn-server:0.1
-          name: news-classifier-server-processor
+        - image: "{{ .Values.image.respository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Values.model.name }}-processor
           env:
-          - name: SELDON_LOG_LEVEL
-            value: DEBUG
+{{- range $pkey, $pval := .Values.env }}
+          - name: {{ $pkey }}
+            value: {{ quote $pval }}
+{{- end }}
         terminationGracePeriodSeconds: 1
     replicas: 1
     engineResources: {}
@@ -39,4 +38,4 @@ spec:
         resources: {}
   annotations:
     seldon.io/engine-seldon-log-messages-externally: 'true'
-status: {}
+

@@ -33,8 +33,8 @@ Now we want to start setting up our repo. For this we will create the following 
 * `Makefile` - Commands to build and test model
 * `README.(md|ipynb)` - This file!
 * `VERSION` - A file containing the version which is updated upon each release
-* `gitops/` - Folder containing the state of our production cluster
-* `assets/` - Folder containing other assets such as model binary, sample deployments, etc
+* `charts/` - Folder containing the deployment configuration information
+* `integration/` - Folder containing integration tests using KIND
 * `src`
     * `ModelName.py` - Model server wrapper file
     * `test_ModelName.py` - Unit test for model server
@@ -159,67 +159,26 @@ Now we want to be able to deploy the model we just trained
 
 
 ```python
-!mkdir -p assets/
-```
-
-
-```python
 import joblib
-joblib.dump(text_clf, "assets/model.joblib")
+joblib.dump(text_clf, "src/model.joblib")
 ```
 
 
 
 
-    ['assets/model.joblib']
+    ['src/model.joblib']
 
 
-
-
-```python
-!gsutil mb gs://news_classifier/
-```
-
-    Creating gs://news_classifier/...
-
-
-
-```python
-!gsutil cp assets/model.joblib gs://news_classifier/model/model.joblib
-```
-
-    Copying file://model.joblib [Content-Type=application/octet-stream]...
-    / [1 files][  4.4 MiB/  4.4 MiB]                                                
-    Operation completed over 1 objects/4.4 MiB.                                      
-
-
-
-```python
-!gsutil acl ch -r -u AllUsers:R gs://news_classifier
-```
-
-    Updated ACL on gs://news_classifier/model
-    Updated ACL on gs://news_classifier/model.joblib
-    Updated ACL on gs://news_classifier/model/model.joblib
-
-
-
-```python
-!mkdir -p src/
-!touch src/__init__.py
-```
 
 
 ```python
 %%writefile src/SklearnServer.py
 
 import joblib, logging
-from seldon_core.storage import Storage
 
 class SklearnServer:
-    def __init__(self, model_uri):
-        output_dir = Storage.download(model_uri)
-        self._model = joblib.load(f"{output_dir}/model.joblib")
+    def __init__(self):
+        self._model = joblib.load(f"model.joblib")
 
     def predict(self, data, feature_names=[], metadata={}):
         logging.info(data)
@@ -246,7 +205,7 @@ def test_sklearn_server():
             'From: rind@enterprise.bih.harvard.edu (David Rind)\nSubject: Re: Candida(yeast) Bloom, Fact or Fiction\nOrganization: Beth Israel Hospital, Harvard Medical School, Boston Mass., USA\nLines: 37\nNNTP-Posting-Host: enterprise.bih.harvard.edu\n\nIn article <1993Apr26.103242.1@vms.ocom.okstate.edu>\n banschbach@vms.ocom.okstate.edu writes:\n>are in a different class.  The big question seems to be is it reasonable to \n>use them in patients with GI distress or sinus problems that *could* be due \n>to candida blooms following the use of broad-spectrum antibiotics?\n\nI guess I\'m still not clear on what the term "candida bloom" means,\nbut certainly it is well known that thrush (superficial candidal\ninfections on mucous membranes) can occur after antibiotic use.\nThis has nothing to do with systemic yeast syndrome, the "quack"\ndiagnosis that has been being discussed.\n\n\n>found in the sinus mucus membranes than is candida.  Women have been known \n>for a very long time to suffer from candida blooms in the vagina and a \n>women is lucky to find a physician who is willing to treat the cause and \n>not give give her advise to use the OTC anti-fungal creams.\n\nLucky how?  Since a recent article (randomized controlled trial) of\noral yogurt on reducing vaginal candidiasis, I\'ve mentioned to a \nnumber of patients with frequent vaginal yeast infections that they\ncould try eating 6 ounces of yogurt daily.  It turns out most would\nrather just use anti-fungal creams when they get yeast infections.\n\n>yogurt dangerous).  If this were a standard part of medical practice, as \n>Gordon R. says it is, then the incidence of GI distress and vaginal yeast \n>infections should decline.\n\nAgain, this just isn\'t what the systemic yeast syndrome is about, and\nhas nothing to do with the quack therapies that were being discussed.\nThere is some evidence that attempts to reinoculate the GI tract with\nbacteria after antibiotic therapy don\'t seem to be very helpful in\nreducing diarrhea, but I don\'t think anyone would view this as a\nquack therapy.\n-- \nDavid Rind\nrind@enterprise.bih.harvard.edu\n']
     labels = [2, 2]
 
-    s = SklearnServer(f"file://{os.getcwd()}/assets/")
+    s = SklearnServer()
     result = s.predict(data)
     assert all(result == labels)
 ```
@@ -268,11 +227,11 @@ def test_sklearn_server():
     cachedir: .pytest_cache
     rootdir: /home/alejandro/Programming/kubernetes/seldon/sig-mlops-example
     plugins: cov-2.7.1, forked-1.0.2, localserver-0.5.0
-    collected 1 item                                                               [0m[1m
+    collected 1 item                                                               [0m
     
     src/test_SklearnServer.py::test_sklearn_server [32mPASSED[0m
     
-    [32m[1m============================== 1 passed in 1.70s ===============================[0m
+    [32m[1m============================== 1 passed in 1.72s ===============================[0m
 
 
 
@@ -314,10 +273,10 @@ s2i build src/. $SELDON_BASE_WRAPPER sklearn-server:0.1 \
     Collecting joblib==0.13.2 (from -r requirements.txt (line 2))
       WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
     Downloading https://files.pythonhosted.org/packages/cd/c1/50a758e8247561e58cb87305b1e90b171b8c767b15b12a1734001f41d356/joblib-0.13.2-py2.py3-none-any.whl (278kB)
-    Requirement already satisfied: numpy>=1.8.2 in /usr/local/lib/python3.6/site-packages (from scikit-learn==0.20.1->-r requirements.txt (line 1)) (1.17.2)
     Collecting scipy>=0.13.3 (from scikit-learn==0.20.1->-r requirements.txt (line 1))
       WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
     Downloading https://files.pythonhosted.org/packages/29/50/a552a5aff252ae915f522e44642bb49a7b7b31677f9580cfd11bcc869976/scipy-1.3.1-cp36-cp36m-manylinux1_x86_64.whl (25.2MB)
+    Requirement already satisfied: numpy>=1.8.2 in /usr/local/lib/python3.6/site-packages (from scikit-learn==0.20.1->-r requirements.txt (line 1)) (1.17.2)
     Installing collected packages: scipy, scikit-learn, joblib
     Successfully installed joblib-0.13.2 scikit-learn-0.20.1 scipy-1.3.1
     WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
@@ -329,68 +288,58 @@ s2i build src/. $SELDON_BASE_WRAPPER sklearn-server:0.1 \
 
 ```bash
 %%bash
-YOUR_DOCKER_USERNAME="axsauze"
+YOUR_DOCKER_USERNAME="seldonio"
 
 docker tag sklearn-server:0.1 $YOUR_DOCKER_USERNAME/sklearn-server:0.1
-docker push $YOUR_DOCKER_USERNAME/sklearn-server:0.1
-```
-
-    Process is interrupted.
-
-
-
-```python
-!mkdir -p gitops
+# docker push $YOUR_DOCKER_USERNAME/sklearn-server:0.1
 ```
 
 
 ```python
-%%writefile gitops/test_deployment.yaml
-apiVersion: machinelearning.seldon.io/v1alpha2
-kind: SeldonDeployment
-metadata:
-  name: news-classifier-server
-  namespace: default
-  creationTimestamp: 
-spec:
-  name: news-classifier-server
-  predictors:
-  - name: default
-    graph:
-      name: news-classifier-server-processor
-      endpoint:
-        type: REST
-      type: MODEL
-      children: []
-      parameters:
-      - name: model_uri
-        type: STRING
-        value: "gs://news_classifier/model/"
-    componentSpecs:
-    - metadata:
-        creationTimestamp: '2019-10-12T16:00:00Z'
-      spec:
-        containers:
-        - image: axsauze/sklearn-server:0.1
-          name: news-classifier-server-processor
-          env:
-          - name: SELDON_LOG_LEVEL
-            value: DEBUG
-        terminationGracePeriodSeconds: 1
-    replicas: 1
-    engineResources: {}
-    svcOrchSpec: {}
-    traffic: 100
-    explainer:
-      containerSpec:
-        name: ''
-        resources: {}
-  annotations:
-    seldon.io/engine-seldon-log-messages-externally: 'true'
-status: {}
+!cat charts/sklearn-model-server/templates/sklearn-seldon-deployment.yaml
 ```
 
-    Writing gitops/test_deployment.yaml
+    apiVersion: machinelearning.seldon.io/v1alpha2
+    kind: SeldonDeployment
+    metadata:
+      name: {{ .Values.model.name }}
+    spec:
+      name: {{ .Values.model.name }}
+      predictors:
+      - name: default
+        graph:
+          name: {{ .Values.model.name }}-processor
+          endpoint:
+            type: REST
+          type: MODEL
+          children: []
+          parameters:
+          - name: model_uri
+            type: STRING
+            value: "gs://news_classifier/model/"
+        componentSpecs:
+        - spec:
+            containers:
+            - image: "{{ .Values.image.respository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              name: {{ .Values.model.name }}-processor
+              env:
+    {{- range $pkey, $pval := .Values.env }}
+              - name: {{ $pkey }}
+                value: {{ quote $pval }}
+    {{- end }}
+            terminationGracePeriodSeconds: 1
+        replicas: 1
+        engineResources: {}
+        svcOrchSpec: {}
+        traffic: 100
+        explainer:
+          containerSpec:
+            name: ''
+            resources: {}
+      annotations:
+        seldon.io/engine-seldon-log-messages-externally: 'true'
+    
 
 
 
