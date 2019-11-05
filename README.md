@@ -886,7 +886,7 @@ We can now run the tests; for this we run all the dev installations and kick off
     ## INSTALL ALL REQUIRED DEPENDENCIES
     make install_integration_dev
     INSTALL_EXIT_VALUE=$?
-
+    
     ## RUNNING TESTS AND CAPTURING ERROR
     make test
     TEST_EXIT_VALUE=$?
