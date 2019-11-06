@@ -1,0 +1,134 @@
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-rc8cg-4[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-credential-initializer-429mb[0m
+{"level":"warn","ts":1573068819.508856,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573068819.5095851,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-rc8cg-4[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-working-dir-initializer-6mvr4[0m
+{"level":"warn","ts":1573068820.874313,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573068820.8767633,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-rc8cg-4[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-rc8cg-4[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-git-source-seldonio-sig-mlops-seldon-jenki-g6qzc[0m
+{"level":"warn","ts":1573068826.9943488,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573068827.6472223,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ v0.0.4 in path /workspace/source"}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-rc8cg-4[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:cd1e329c09ba6acb2f2c904cae432d7fb50a8bc8
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-rc8cg-4[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-run-tests[0m
+Makefile:18: warning: overriding recipe for target 'make'
+Makefile:15: warning: ignoring old recipe for target 'make'
+pip install -r src/requirements-dev.txt
+Collecting scikit-learn==0.20.1
+  Downloading https://files.pythonhosted.org/packages/10/26/d04320c3edf2d59b1fcd0720b46753d4d603a76e68d8ad10a9b92ab06db2/scikit_learn-0.20.1-cp36-cp36m-manylinux1_x86_64.whl (5.4MB)
+Collecting joblib==0.13.2
+  Downloading https://files.pythonhosted.org/packages/cd/c1/50a758e8247561e58cb87305b1e90b171b8c767b15b12a1734001f41d356/joblib-0.13.2-py2.py3-none-any.whl (278kB)
+Collecting pytest==5.1.1
+  Downloading https://files.pythonhosted.org/packages/ef/3b/5652e27e048ae086f79ce9c4ce8a2da6bad1e9590788e5768aafc6f375ef/pytest-5.1.1-py3-none-any.whl (223kB)
+Collecting numpy>=1.8.2
+  Downloading https://files.pythonhosted.org/packages/0e/46/ae6773894f7eacf53308086287897ec568eac9768918d913d5b9d366c5db/numpy-1.17.3-cp36-cp36m-manylinux1_x86_64.whl (20.0MB)
+Collecting scipy>=0.13.3
+  Downloading https://files.pythonhosted.org/packages/29/50/a552a5aff252ae915f522e44642bb49a7b7b31677f9580cfd11bcc869976/scipy-1.3.1-cp36-cp36m-manylinux1_x86_64.whl (25.2MB)
+Collecting atomicwrites>=1.0
+  Downloading https://files.pythonhosted.org/packages/52/90/6155aa926f43f2b2a22b01be7241be3bfd1ceaf7d0b3267213e8127d41f4/atomicwrites-1.3.0-py2.py3-none-any.whl
+Collecting importlib-metadata>=0.12; python_version < "3.8"
+  Downloading https://files.pythonhosted.org/packages/f6/d2/40b3fa882147719744e6aa50ac39cf7a22a913cbcba86a0371176c425a3b/importlib_metadata-0.23-py2.py3-none-any.whl
+Collecting py>=1.5.0
+  Downloading https://files.pythonhosted.org/packages/76/bc/394ad449851729244a97857ee14d7cba61ddb268dce3db538ba2f2ba1f0f/py-1.8.0-py2.py3-none-any.whl (83kB)
+Collecting pluggy<1.0,>=0.12
+  Downloading https://files.pythonhosted.org/packages/92/c7/48439f7d5fd6bddb4c04b850bb862b42e3e2b98570040dfaf68aedd8114b/pluggy-0.13.0-py2.py3-none-any.whl
+Collecting more-itertools>=4.0.0
+  Downloading https://files.pythonhosted.org/packages/45/dc/3241eef99eb45f1def35cf93af35d1cf9ef4c0991792583b8f33ea41b092/more_itertools-7.2.0-py3-none-any.whl (57kB)
+Collecting packaging
+  Downloading https://files.pythonhosted.org/packages/cf/94/9672c2d4b126e74c4496c6b3c58a8b51d6419267be9e70660ba23374c875/packaging-19.2-py2.py3-none-any.whl
+Collecting attrs>=17.4.0
+  Downloading https://files.pythonhosted.org/packages/a2/db/4313ab3be961f7a763066401fb77f7748373b6094076ae2bda2806988af6/attrs-19.3.0-py2.py3-none-any.whl
+Collecting wcwidth
+  Downloading https://files.pythonhosted.org/packages/7e/9f/526a6947247599b084ee5232e4f9190a38f398d7300d866af3ab571a5bfe/wcwidth-0.1.7-py2.py3-none-any.whl
+Collecting zipp>=0.5
+  Downloading https://files.pythonhosted.org/packages/74/3d/1ee25a26411ba0401b43c6376d2316a71addcc72ef8690b101b4ea56d76a/zipp-0.6.0-py2.py3-none-any.whl
+Collecting pyparsing>=2.0.2
+  Downloading https://files.pythonhosted.org/packages/a3/c4/7828cf9e71ce8fbd43c1e502f3fdd0498f069fcf9d1c268205ce278ae201/pyparsing-2.4.4-py2.py3-none-any.whl (67kB)
+Requirement already satisfied: six in /usr/local/lib/python3.6/site-packages (from packaging->pytest==5.1.1->-r src/requirements-dev.txt (line 3)) (1.12.0)
+Installing collected packages: numpy, scipy, scikit-learn, joblib, atomicwrites, more-itertools, zipp, importlib-metadata, py, pluggy, pyparsing, packaging, attrs, wcwidth, pytest
+Successfully installed atomicwrites-1.3.0 attrs-19.3.0 importlib-metadata-0.23 joblib-0.13.2 more-itertools-7.2.0 numpy-1.17.3 packaging-19.2 pluggy-0.13.0 py-1.8.0 pyparsing-2.4.4 pytest-5.1.1 scikit-learn-0.20.1 scipy-1.3.1 wcwidth-0.1.7 zipp-0.6.0
+(cd src && pytest -s --verbose -W ignore 2>&1)
+============================= test session starts ==============================
+platform linux -- Python 3.6.0, pytest-5.1.1, py-1.8.0, pluggy-0.13.0 -- /usr/local/bin/python3.6
+cachedir: .pytest_cache
+rootdir: /
+collecting ... collected 1 item
+
+test_SklearnServer.py::test_sklearn_server FAILED
+
+=================================== FAILURES ===================================
+_____________________________ test_sklearn_server ______________________________
+
+    def test_sklearn_server():
+        data = ["From: brian@ucsd.edu (Brian Kantor)\nSubject: Re: HELP for Kidney Stones ..............\nOrganization: The Avant-Garde of the Now, Ltd.\nLines: 12\nNNTP-Posting-Host: ucsd.edu\n\nAs I recall from my bout with kidney stones, there isn't any\nmedication that can do anything about them except relieve the pain.\n\nEither they pass, or they have to be broken up with sound, or they have\nto be extracted surgically.\n\nWhen I was in, the X-ray tech happened to mention that she'd had kidney\nstones and children, and the childbirth hurt less.\n\nDemerol worked, although I nearly got arrested on my way home when I barfed\nall over the police car parked just outside the ER.\n\t- Brian\n",
+                'From: rind@enterprise.bih.harvard.edu (David Rind)\nSubject: Re: Candida(yeast) Bloom, Fact or Fiction\nOrganization: Beth Israel Hospital, Harvard Medical School, Boston Mass., USA\nLines: 37\nNNTP-Posting-Host: enterprise.bih.harvard.edu\n\nIn article <1993Apr26.103242.1@vms.ocom.okstate.edu>\n banschbach@vms.ocom.okstate.edu writes:\n>are in a different class.  The big question seems to be is it reasonable to \n>use them in patients with GI distress or sinus problems that *could* be due \n>to candida blooms following the use of broad-spectrum antibiotics?\n\nI guess I\'m still not clear on what the term "candida bloom" means,\nbut certainly it is well known that thrush (superficial candidal\ninfections on mucous membranes) can occur after antibiotic use.\nThis has nothing to do with systemic yeast syndrome, the "quack"\ndiagnosis that has been being discussed.\n\n\n>found in the sinus mucus membranes than is candida.  Women have been known \n>for a very long time to suffer from candida blooms in the vagina and a \n>women is lucky to find a physician who is willing to treat the cause and \n>not give give her advise to use the OTC anti-fungal creams.\n\nLucky how?  Since a recent article (randomized controlled trial) of\noral yogurt on reducing vaginal candidiasis, I\'ve mentioned to a \nnumber of patients with frequent vaginal yeast infections that they\ncould try eating 6 ounces of yogurt daily.  It turns out most would\nrather just use anti-fungal creams when they get yeast infections.\n\n>yogurt dangerous).  If this were a standard part of medical practice, as \n>Gordon R. says it is, then the incidence of GI distress and vaginal yeast \n>infections should decline.\n\nAgain, this just isn\'t what the systemic yeast syndrome is about, and\nhas nothing to do with the quack therapies that were being discussed.\nThere is some evidence that attempts to reinoculate the GI tract with\nbacteria after antibiotic therapy don\'t seem to be very helpful in\nreducing diarrhea, but I don\'t think anyone would view this as a\nquack therapy.\n-- \nDavid Rind\nrind@enterprise.bih.harvard.edu\n']
+        labels = [2, 2]
+    
+>       s = SklearnServer()
+
+test_SklearnServer.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+SklearnServer.py:6: in __init__
+    self._model = joblib.load(f"model.joblib")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+filename = 'model.joblib', mmap_mode = None
+
+    def load(filename, mmap_mode=None):
+        """Reconstruct a Python object from a file persisted with joblib.dump.
+    
+        Read more in the :ref:`User Guide <persistence>`.
+    
+        Parameters
+        -----------
+        filename: str, pathlib.Path, or file object.
+            The file object or path of the file from which to load the object
+        mmap_mode: {None, 'r+', 'r', 'w+', 'c'}, optional
+            If not None, the arrays are memory-mapped from the disk. This
+            mode has no effect for compressed files. Note that in this
+            case the reconstructed object might no longer match exactly
+            the originally pickled object.
+    
+        Returns
+        -------
+        result: any Python object
+            The object stored in the file.
+    
+        See Also
+        --------
+        joblib.dump : function to save an object
+    
+        Notes
+        -----
+    
+        This function can load numpy array files saved separately during the
+        dump. If the mmap_mode argument is given, it is passed to np.load and
+        arrays are loaded as memmaps. As a consequence, the reconstructed
+        object might not match the original pickled object. Note that if the
+        file was saved with compression, the arrays cannot be memmapped.
+        """
+        if Path is not None and isinstance(filename, Path):
+            filename = str(filename)
+    
+        if hasattr(filename, "read"):
+            fobj = filename
+            filename = getattr(fobj, 'name', '')
+            with _read_fileobject(fobj, filename, mmap_mode) as fobj:
+                obj = _unpickle(fobj)
+        else:
+>           with open(filename, 'rb') as f:
+E           FileNotFoundError: [Errno 2] No such file or directory: 'model.joblib'
+
+/usr/local/lib/python3.6/site-packages/joblib/numpy_pickle.py:590: FileNotFoundError
+============================== 1 failed in 0.32s ===============================
+make: *** [test] Error 1
+Makefile:15: recipe for target 'test' failed
+[31m
+Pipeline failed on stage 'test-and-deploy-sklearn-server' : container 'step-run-tests'. The execution of the pipeline has stopped.[0m
