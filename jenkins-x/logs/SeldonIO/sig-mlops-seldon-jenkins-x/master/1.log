@@ -1,0 +1,36 @@
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-1[0m stage [32mmeta-pipeline[0m and container [32mstep-credential-initializer-cbjm8[0m
+{"level":"warn","ts":1573067443.1440644,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573067443.1449933,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-1[0m stage [32mmeta-pipeline[0m and container [32mstep-working-dir-initializer-xh5w7[0m
+{"level":"warn","ts":1573067444.3753343,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573067444.4904127,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-1[0m stage [32mmeta-pipeline[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-1[0m stage [32mmeta-pipeline[0m and container [32mstep-git-source-meta-seldonio-sig-mlops-seldon-ftkmz[0m
+{"level":"warn","ts":1573067450.361893,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573067452.3025875,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ 8cabb8103c160ce20cbf2d1f14c366796f3e3e13 in path /workspace/source"}
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-1[0m stage [32mmeta-pipeline[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:8cabb8103c160ce20cbf2d1f14c366796f3e3e13
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-1[0m stage [32mmeta-pipeline[0m and container [32mstep-merge-pull-refs[0m
+SKIP merge-pull-refs: Nothing to merge
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-1[0m stage [32mmeta-pipeline[0m and container [32mstep-create-effective-pipeline[0m
+Effective pipeline written to jenkins-x-effective.yml
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-1[0m stage [32mmeta-pipeline[0m and container [32mstep-create-tekton-crds[0m
+running command: ** step next-version --use-git-tag-only --tag
+created new version: 0.0.1 and written to file: ./VERSION
+Updating chart version in charts/sklearn-model-server/Chart.yaml to 0.0.1
+Updating repository in charts/sklearn-model-server/values.yaml to gcr.io/seldon-core-ops/sig-mlops-seldon-jenkins-x
+Updating tag in charts/sklearn-model-server/values.yaml to 0.0.1
+Tag v0.0.1 created and pushed to remote origin
+
+error: failed to generate Tekton CRDs: generation failed for Pipeline: syntactic sugar steps not yet supported
+[31m
+Pipeline failed on stage 'meta-pipeline' : container 'step-create-tekton-crds'. The execution of the pipeline has stopped.[0m
