@@ -1,0 +1,4 @@
+scikit-learn==0.20.1
+joblib==0.13.2
+pytest==5.1.1
+
