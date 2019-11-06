@@ -6,11 +6,11 @@ readme:
 	jupyter nbconvert README.ipynb --to markdown
 
 build:
-	s2i build src/. ${SELDON_BASE_WRAPPER} sklearn-server:0.1 \
+	s2i build src/. ${SELDON_BASE_WRAPPER} ${IMAGE_NAME}:${VERSION} \
 		--environment-file src/seldon_model.conf
 
 push_to_dockerhub:
-	docker push $(IMAGE_NAME)_rest:$(VERSION)
+	docker push $(IMAGE_NAME):$(VERSION)
 
 make test:
 	(cd src && pytest -s --verbose -W ignore 2>&1)
