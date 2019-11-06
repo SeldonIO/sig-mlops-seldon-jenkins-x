@@ -29,15 +29,10 @@ done
 # AVOID EXIT ON ERROR FOR FOLLOWING CMDS
 set +o errexit
 
-if [ -z $DOCKER_AUTH_CONFIG ]; then
-    echo "DOCKER AUTH NOT SET"
-    DOCKER_CMD_VALUE=1
-else
-    make \
-        build \
-        push_to_dockerhub
-    DOCKER_CMD_VALUE=$?
-fi
+make \
+    build \
+    push_to_dockerhub
+DOCKER_CMD_VALUE=$?
 
 
 #######################################
