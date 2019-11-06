@@ -1,0 +1,28 @@
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-2[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-credential-initializer-qp24d[0m
+{"level":"warn","ts":1573068327.0617454,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573068327.0622096,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-2[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-working-dir-initializer-pttv7[0m
+{"level":"warn","ts":1573068328.4022474,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573068328.404311,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-2[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-2[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-git-source-seldonio-sig-mlops-seldon-jenki-dzfjr[0m
+{"level":"warn","ts":1573068333.5850358,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573068334.4831922,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ v0.0.2 in path /workspace/source"}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-2[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:3f79710817974b3839656020042639ed73bfd90b
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-2[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-run-tests[0m
+Makefile:18: warning: overriding recipe for target 'make'
+Makefile:15: warning: ignoring old recipe for target 'make'
+pip install -r src/requirements-dev.txt
+ERROR: Could not open requirements file: [Errno 2] No such file or directory: 'src/requirements-dev.txt'
+Makefile:18: recipe for target 'install_dev' failed
+make: *** [install_dev] Error 1
+[31m
+Pipeline failed on stage 'test-and-deploy-sklearn-server' : container 'step-run-tests'. The execution of the pipeline has stopped.[0m
