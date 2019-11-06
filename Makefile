@@ -12,7 +12,7 @@ push_to_dockerhub:
 	docker push $(IMAGE_NAME)_rest:$(VERSION)
 
 make test:
-	pytest -s --verbose -W ignore 2>&1
+	(cd src && pytest -s --verbose -W ignore 2>&1)
 
 make install_dev:
 	pip install -r src/requirements-dev.txt
