@@ -1,11 +1,12 @@
 VERSION := $(shell cat VERSION)
 IMAGE_NAME = seldonio/nmt-model-server
+SELDON_BASE_WRAPPER = seldonio/seldon-core-s2i-python3:0.13
 
 readme:
 	jupyter nbconvert README.ipynb --to markdown
 
 build:
-	s2i build src/. $SELDON_BASE_WRAPPER sklearn-server:0.1 \
+	s2i build src/. ${SELDON_BASE_WRAPPER} sklearn-server:0.1 \
 		--environment-file src/seldon_model.conf
 
 push_to_dockerhub:
