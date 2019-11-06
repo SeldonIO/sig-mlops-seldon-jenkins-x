@@ -627,8 +627,9 @@ Now that we're able to build some tests, we want to update the images so we can 
 For this, we will have to add a couple of things, including:
 
 1. The task in the `jenkins-x.yml` file that would allow us to build and push the image
-2. The config in the `jenkins-x.yml` to provide docker authentications (to push images)
-3. A script that starts a docker daemon and then builds+psuhes the images
+2. Adding an authentication token so we can push images
+3. Mounting the docker config in the `jenkins-x.yml` to provide docker authentications (to push images)
+4. A script that starts a docker daemon and then builds+psuhes the images
 
 #### JX Task to Build and Push image
 
@@ -640,6 +641,14 @@ For this, we would just have to append the following task in our jenkins file:
       args:
       - assets/scripts/build_and_push_docker_daemon.sh
 ```
+
+#### Add docker auth to your cluster
+
+Adding a docker authentication with Jenkins X can be done through a JX CLI command, which is the following:
+
+* `jx create docker auth --host https://index.docker.io/v1/ --user $YOUR_DOCKER_USERNAME --secret $YOUR_DOCKER_KEY_SECRET --email $YOUR_DOCKER_EMAIL`
+
+This comamnd will use these credentials to authenticate with Docker and create an auth token (which expires).
 
 #### Config to provide docker authentication
 
