@@ -8,13 +8,11 @@ pipelineConfig:
         stages:
         - name: test-and-deploy-sklearn-server
           steps:
-          - name: test-sklearn-server
-            steps:
-            - name: run-tests
-              command: make
-              args:
-              - install_dev
-              - test
+          - name: run-tests
+            command: make
+            args:
+            - install_dev
+            - test
           - name: build-and-push-images
             command: bash
             args:
@@ -59,13 +57,11 @@ pipelineConfig:
           parallel:
           - name: test-and-deploy-sklearn-server
             steps:
-            - name: test-sklearn-server
-              steps:
-              - name: run-tests
-                command: make
-                args:
-                - install_dev
-                - test
+            - name: run-tests
+              command: make
+              args:
+              - install_dev
+              - test
             - name: build-and-push-images
               command: bash
               args:
