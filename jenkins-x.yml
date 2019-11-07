@@ -6,23 +6,21 @@ pipelineConfig:
         agent:
           image: seldonio/core-builder:0.4
         stages:
-        - name: test-and-deploy-sklearn-server
-          steps:
-          - name: run-tests
-            command: make
-            args:
-            - install_dev
-            - test
+#        - name: test-and-deploy-sklearn-server
+#          steps:
+#          - name: run-tests
+#            command: make
+#            args:
+#            - install_dev
+#            - test
         - name: release-promote
           agent:
             image: gcr.io/jenkinsxio/builder-go:2.0.916-264
           steps:
-          - name: jx-version
-            sh: jx version
           - name: changelog
             sh: "cd charts/sklearn-model-server && jx step changelog --batch-mode --version v$(cat ../../VERSION)"
           - name: helm-release
-            sh: "unset TILLER_NAMESPACE && jx step helm env && jx step helm release --dir charts/sklearn-model-server/ --remote"
+            sh: "jx step helm release"
           - name: helm-release-promote
             sh: "cd charts/sklearn-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ../../VERSION)"
         options:
