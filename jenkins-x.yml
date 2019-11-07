@@ -10,7 +10,7 @@ pipelineConfig:
             name: make-preview
           - sh: jx preview --app $APP_NAME --dir ../..
             name: jx-preview
-      pipeline:
+      build:
         agent:
           image: seldonio/core-builder:0.4
         stages:
@@ -65,7 +65,7 @@ pipelineConfig:
           - comment: promote through all 'Auto' promotion Environments
             sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
             name: jx-promote
-      pipeline:
+      build:
         agent:
           image: seldonio/core-builder:0.4
         stages:
