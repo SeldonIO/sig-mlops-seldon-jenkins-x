@@ -1,0 +1,108 @@
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-credential-initializer-7rqz4[0m
+{"level":"warn","ts":1573145566.6080227,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573145566.608613,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-working-dir-initializer-c7hsz[0m
+{"level":"warn","ts":1573145567.9769313,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573145568.096981,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-git-source-seldonio-sig-mlops-seldon-jenki-gg6nn[0m
+{"level":"warn","ts":1573145574.1368988,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573145576.7250535,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ v0.0.18 in path /workspace/source"}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:45880342b6c8d67af139862a379248cbc0d9f0ee
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-run-tests[0m
+cat: VERSION: No such file or directory
+Makefile:10: warning: overriding recipe for target 'make'
+Makefile:7: warning: ignoring old recipe for target 'make'
+Makefile:13: warning: overriding recipe for target 'make'
+Makefile:10: warning: ignoring old recipe for target 'make'
+pip install -r src/requirements.txt
+Collecting scikit-learn==0.20.3
+  Downloading https://files.pythonhosted.org/packages/5e/82/c0de5839d613b82bddd088599ac0bbfbbbcbd8ca470680658352d2c435bd/scikit_learn-0.20.3-cp36-cp36m-manylinux1_x86_64.whl (5.4MB)
+Collecting joblib==0.13.2
+  Downloading https://files.pythonhosted.org/packages/cd/c1/50a758e8247561e58cb87305b1e90b171b8c767b15b12a1734001f41d356/joblib-0.13.2-py2.py3-none-any.whl (278kB)
+Collecting pytest==5.1.1
+  Downloading https://files.pythonhosted.org/packages/ef/3b/5652e27e048ae086f79ce9c4ce8a2da6bad1e9590788e5768aafc6f375ef/pytest-5.1.1-py3-none-any.whl (223kB)
+Collecting scipy>=0.13.3
+  Downloading https://files.pythonhosted.org/packages/29/50/a552a5aff252ae915f522e44642bb49a7b7b31677f9580cfd11bcc869976/scipy-1.3.1-cp36-cp36m-manylinux1_x86_64.whl (25.2MB)
+Collecting numpy>=1.8.2
+  Downloading https://files.pythonhosted.org/packages/0e/46/ae6773894f7eacf53308086287897ec568eac9768918d913d5b9d366c5db/numpy-1.17.3-cp36-cp36m-manylinux1_x86_64.whl (20.0MB)
+Collecting py>=1.5.0
+  Downloading https://files.pythonhosted.org/packages/76/bc/394ad449851729244a97857ee14d7cba61ddb268dce3db538ba2f2ba1f0f/py-1.8.0-py2.py3-none-any.whl (83kB)
+Collecting packaging
+  Downloading https://files.pythonhosted.org/packages/cf/94/9672c2d4b126e74c4496c6b3c58a8b51d6419267be9e70660ba23374c875/packaging-19.2-py2.py3-none-any.whl
+Collecting importlib-metadata>=0.12; python_version < "3.8"
+  Downloading https://files.pythonhosted.org/packages/f6/d2/40b3fa882147719744e6aa50ac39cf7a22a913cbcba86a0371176c425a3b/importlib_metadata-0.23-py2.py3-none-any.whl
+Collecting atomicwrites>=1.0
+  Downloading https://files.pythonhosted.org/packages/52/90/6155aa926f43f2b2a22b01be7241be3bfd1ceaf7d0b3267213e8127d41f4/atomicwrites-1.3.0-py2.py3-none-any.whl
+Collecting pluggy<1.0,>=0.12
+  Downloading https://files.pythonhosted.org/packages/92/c7/48439f7d5fd6bddb4c04b850bb862b42e3e2b98570040dfaf68aedd8114b/pluggy-0.13.0-py2.py3-none-any.whl
+Collecting wcwidth
+  Downloading https://files.pythonhosted.org/packages/7e/9f/526a6947247599b084ee5232e4f9190a38f398d7300d866af3ab571a5bfe/wcwidth-0.1.7-py2.py3-none-any.whl
+Collecting more-itertools>=4.0.0
+  Downloading https://files.pythonhosted.org/packages/45/dc/3241eef99eb45f1def35cf93af35d1cf9ef4c0991792583b8f33ea41b092/more_itertools-7.2.0-py3-none-any.whl (57kB)
+Collecting attrs>=17.4.0
+  Downloading https://files.pythonhosted.org/packages/a2/db/4313ab3be961f7a763066401fb77f7748373b6094076ae2bda2806988af6/attrs-19.3.0-py2.py3-none-any.whl
+Collecting pyparsing>=2.0.2
+  Downloading https://files.pythonhosted.org/packages/a3/c4/7828cf9e71ce8fbd43c1e502f3fdd0498f069fcf9d1c268205ce278ae201/pyparsing-2.4.4-py2.py3-none-any.whl (67kB)
+Requirement already satisfied: six in /usr/local/lib/python3.6/site-packages (from packaging->pytest==5.1.1->-r src/requirements.txt (line 18)) (1.12.0)
+Collecting zipp>=0.5
+  Downloading https://files.pythonhosted.org/packages/74/3d/1ee25a26411ba0401b43c6376d2316a71addcc72ef8690b101b4ea56d76a/zipp-0.6.0-py2.py3-none-any.whl
+Installing collected packages: numpy, scipy, scikit-learn, joblib, py, pyparsing, packaging, more-itertools, zipp, importlib-metadata, atomicwrites, pluggy, wcwidth, attrs, pytest
+Successfully installed atomicwrites-1.3.0 attrs-19.3.0 importlib-metadata-0.23 joblib-0.13.2 more-itertools-7.2.0 numpy-1.17.3 packaging-19.2 pluggy-0.13.0 py-1.8.0 pyparsing-2.4.4 pytest-5.1.1 scikit-learn-0.20.3 scipy-1.3.1 wcwidth-0.1.7 zipp-0.6.0
+(cd src && pytest -s --verbose -W ignore 2>&1)
+============================= test session starts ==============================
+platform linux -- Python 3.6.0, pytest-5.1.1, py-1.8.0, pluggy-0.13.0 -- /usr/local/bin/python3.6
+cachedir: .pytest_cache
+rootdir: /
+collecting ... collected 1 item
+
+test_model.py::test_model PASSED
+
+============================== 1 passed in 1.38s ===============================
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-source-mkdir-seldonio-sig-mlops-seldon-jenki-nxhdb[0m
+{"level":"warn","ts":1573145597.7239053,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573145597.727663,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /pvc/test-and-deploy-sklearn-server/workspace\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-source-copy-seldonio-sig-mlops-seldon-jenki-ctrpm[0m
+{"level":"warn","ts":1573145598.0489187,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573145598.0686724,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"cp -r /workspace/source/. /pvc/test-and-deploy-sklearn-server/workspace\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mpr-promote[0m and container [32mstep-credential-initializer-lrfdk[0m
+{"level":"warn","ts":1573145634.7360044,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573145634.7364874,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mpr-promote[0m and container [32mstep-working-dir-initializer-c7cdd[0m
+{"level":"warn","ts":1573145636.153937,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573145636.1570318,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mpr-promote[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mpr-promote[0m and container [32mstep-create-dir-workspace-hlqpw[0m
+{"level":"warn","ts":1573145641.2542014,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573145641.2564256,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mpr-promote[0m and container [32mstep-source-copy-workspace-gl489[0m
+{"level":"warn","ts":1573145641.5995986,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573145641.7235265,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"cp -r /pvc/test-and-deploy-sklearn-server/workspace/. /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-j6nhz-26[0m stage [32mpr-promote[0m and container [32mstep-make-preview[0m
+sed -i -e "s/version:.*/version: 0.0.18/" Chart.yaml
+sed -i -e "s/version:.*/version: 0.0.18/" ../*/Chart.yaml
+sed -i -e "s|repository:.*|repository: seldonio\/sklearn-model-server|" values.yaml
+sed -i -e "s/tag:.*/tag: 0.0.18/" values.yaml
+echo "  version: 0.0.18" >> requirements.yaml
+** step helm build
+make: **: Command not found
+Makefile:9: recipe for target 'preview' failed
+make: *** [preview] Error 127
+[31m
+Pipeline failed on stage 'pr-promote' : container 'step-make-preview'. The execution of the pipeline has stopped.[0m
