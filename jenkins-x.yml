@@ -15,7 +15,7 @@ pipelineConfig:
             - test
         - name: release-promote
           agent:
-            image: jenkinsxio/jx:2.0.598
+            image: gcr.io/jenkinsxio/builder-go:2.0.916-264
           steps:
           - name: jx-version
             sh: jx version
@@ -70,7 +70,7 @@ pipelineConfig:
             - test
         - name: pr-promote
           agent:
-            image: jenkinsxio/jx:2.0.598
+            image: gcr.io/jenkinsxio/builder-go:2.0.916-264
           steps:
           - name: make-preview
             sh: cd charts/preview && make preview
