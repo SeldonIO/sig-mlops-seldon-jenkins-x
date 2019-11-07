@@ -1,0 +1,55 @@
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-zgm4j-40[0m stage [32mrelease-promote[0m and container [32mstep-credential-initializer-8xzvp[0m
+{"level":"warn","ts":1573157944.719281,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573157944.7201605,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-zgm4j-40[0m stage [32mrelease-promote[0m and container [32mstep-working-dir-initializer-6ddqv[0m
+{"level":"warn","ts":1573157945.7886958,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573157945.7904243,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-zgm4j-40[0m stage [32mrelease-promote[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-zgm4j-40[0m stage [32mrelease-promote[0m and container [32mstep-git-source-seldonio-sig-mlops-seldon-jenki-4gmnp[0m
+{"level":"warn","ts":1573157950.7934911,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573157952.6278641,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ v0.0.31 in path /workspace/source"}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-zgm4j-40[0m stage [32mrelease-promote[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:9ed6655296a5710e8972b83b4a51439dd825a951
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-zgm4j-40[0m stage [32mrelease-promote[0m and container [32mstep-changelog[0m
+Converted /workspace/source/charts/sklearn-model-server to an unshallow repository
+Generating change log from git ref f977206126369c23a001f7627050e5e9b866498b => b47fa114b8aee6ec765ceeaefff49cb2c276cd4b
+Associating user x-0 in users.jenkins.io with email axsauze@gmail.com to git GitProvider user with login -0 as emails match
+Adding label jenkins.io/git-github-userid=-0 to user x-0 in users.jenkins.io
+WARNING: Failed to enrich commit 9ed6655296a5710e8972b83b4a51439dd825a951 with issues: User.jenkins.io "x-0" is invalid: metadata.labels: Invalid value: "-0": a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex used for validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?')
+Associating user x-0 in users.jenkins.io with email axsauze@gmail.com to git GitProvider user with login -0 as emails match
+Adding label jenkins.io/git-github-userid=-0 to user x-0 in users.jenkins.io
+WARNING: Failed to enrich commit 9ed6655296a5710e8972b83b4a51439dd825a951 with issues: User.jenkins.io "x-0" is invalid: metadata.labels: Invalid value: "-0": a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex used for validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?')
+Finding issues in commit messages using git format
+WARNING: No release found for SeldonIO/sig-mlops-seldon-jenkins-x and tag v0.0.31 so creating a new release
+Updated the release information at https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x/releases/tag/v0.0.31
+generated: /workspace/source/charts/sklearn-model-server/templates/release.yaml
+Created Release sig-mlops-seldon-jenkins-x-0-0-31 resource in namespace **
+Updating PipelineActivity seldonio-sig-mlops-seldon-jenkins-x-master-40 with version 0.0.31
+Updated PipelineActivities seldonio-sig-mlops-seldon-jenkins-x-master-40 with release notes URL: https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x/releases/tag/v0.0.31
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-zgm4j-40[0m stage [32mrelease-promote[0m and container [32mstep-helm-release[0m
+WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
+Adding missing Helm repo: storage.googleapis.com https://storage.googleapis.com/chartmuseum.jenkins-x.io
+Read credentials for https://storage.googleapis.com/chartmuseum.jenkins-x.io from vault helm/repos
+Successfully added Helm repository storage.googleapis.com.
+Adding missing Helm repo: jenkins-x-chartmuseum http://jenkins-x-chartmuseum:8080
+Read credentials for http://jenkins-x-chartmuseum:8080 from vault helm/repos
+Successfully added Helm repository jenkins-x-chartmuseum.
+WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
+Uploading chart file sklearn-model-server-0.0.31.tgz to http://jenkins-x-chartmuseum:8080/api/charts
+Received 201 response: {"saved":true}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-zgm4j-40[0m stage [32mrelease-promote[0m and container [32mstep-helm-release-promote[0m
+WARNING: prow based install so skip waiting for the merge of Pull Requests to go green as currently there is an issue with gettingstatuses from the PR, see https://github.com/jenkins-x/**/issues/2410
+Promoting app sklearn-model-server version 0.0.31 to namespace **-staging
+Created Pull Request: https://github.com/SeldonIO/environment-**-production-cluster-staging/pull/2
+Pull Request https://github.com/SeldonIO/environment-**-production-cluster-staging/pull/2 is merged at sha 188ae2c6c02274ab9e97c2fa415d4c4508b8c75b
+Pull Request merged but we are not waiting for the update pipeline to complete!
+WARNING: Could not find the service URL in namespace **-staging for names sklearn-model-server, **-sklearn-model-server, **-staging-sklearn-model-server
