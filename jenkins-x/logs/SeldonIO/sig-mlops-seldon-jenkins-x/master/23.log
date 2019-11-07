@@ -1,0 +1,27 @@
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-gw7r8-23[0m stage [32mmeta-pipeline[0m and container [32mstep-credential-initializer-lvvfs[0m
+{"level":"warn","ts":1573145046.1953194,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573145046.1962714,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-gw7r8-23[0m stage [32mmeta-pipeline[0m and container [32mstep-working-dir-initializer-265jd[0m
+{"level":"warn","ts":1573145047.5627265,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573145047.5652544,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-gw7r8-23[0m stage [32mmeta-pipeline[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-gw7r8-23[0m stage [32mmeta-pipeline[0m and container [32mstep-git-source-meta-seldonio-sig-mlops-seldon-wvr8c[0m
+{"level":"warn","ts":1573145052.7198546,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573145053.905678,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ d32016cac3bd46c452319bde03b9496916525089 in path /workspace/source"}
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-gw7r8-23[0m stage [32mmeta-pipeline[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:d32016cac3bd46c452319bde03b9496916525089
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-gw7r8-23[0m stage [32mmeta-pipeline[0m and container [32mstep-merge-pull-refs[0m
+SKIP merge-pull-refs: Nothing to merge
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-gw7r8-23[0m stage [32mmeta-pipeline[0m and container [32mstep-create-effective-pipeline[0m
+error: failed to create effective pipeline for pull request: validation failed for Pipeline: step names within a stage must be unique: stages[1].steps
+The following step names in the stage promote are used more than once: helm-release
+[31m
+Pipeline failed on stage 'meta-pipeline' : container 'step-create-effective-pipeline'. The execution of the pipeline has stopped.[0m
