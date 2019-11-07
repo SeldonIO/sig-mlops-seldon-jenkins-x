@@ -21,10 +21,6 @@ pipelineConfig:
             args:
             - install_dev
             - test
-          - name: build-and-push-images
-            command: bash
-            args:
-            - assets/scripts/build_and_push_docker_daemon.sh
         options:
           containerOptions:
             volumeMounts:
@@ -82,10 +78,6 @@ pipelineConfig:
               args:
               - install_dev
               - test
-            - name: build-and-push-images
-              command: bash
-              args:
-              - assets/scripts/build_and_push_docker_daemon.sh
         options:
           containerOptions:
             volumeMounts:
