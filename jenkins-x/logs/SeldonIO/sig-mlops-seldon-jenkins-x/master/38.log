@@ -1,0 +1,47 @@
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-6hfpg-38[0m stage [32mrelease-promote[0m and container [32mstep-credential-initializer-xtqq4[0m
+{"level":"warn","ts":1573157662.9166677,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573157662.9176238,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-6hfpg-38[0m stage [32mrelease-promote[0m and container [32mstep-working-dir-initializer-p672b[0m
+{"level":"warn","ts":1573157663.8740923,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573157663.8767538,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-6hfpg-38[0m stage [32mrelease-promote[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-6hfpg-38[0m stage [32mrelease-promote[0m and container [32mstep-git-source-seldonio-sig-mlops-seldon-jenki-4x9vf[0m
+{"level":"warn","ts":1573157699.285363,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573157701.836184,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ v0.0.29 in path /workspace/source"}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-6hfpg-38[0m stage [32mrelease-promote[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:6e4162f93fe29abf7fa7e87ae6f5037f8ea39d46
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-6hfpg-38[0m stage [32mrelease-promote[0m and container [32mstep-changelog[0m
+Converted /workspace/source/charts/sklearn-model-server to an unshallow repository
+Generating change log from git ref 2aac543f0056d8573efb6d9eb3aa073e44ed6a13 => 5522d4482e4fda4ee947122b33df6e4a3f42f6a5
+Associating user x-0 in users.jenkins.io with email axsauze@gmail.com to git GitProvider user with login -0 as emails match
+Adding label jenkins.io/git-github-userid=-0 to user x-0 in users.jenkins.io
+WARNING: Failed to enrich commit 6e4162f93fe29abf7fa7e87ae6f5037f8ea39d46 with issues: User.jenkins.io "x-0" is invalid: metadata.labels: Invalid value: "-0": a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex used for validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?')
+Associating user x-0 in users.jenkins.io with email axsauze@gmail.com to git GitProvider user with login -0 as emails match
+Adding label jenkins.io/git-github-userid=-0 to user x-0 in users.jenkins.io
+WARNING: Failed to enrich commit 6e4162f93fe29abf7fa7e87ae6f5037f8ea39d46 with issues: User.jenkins.io "x-0" is invalid: metadata.labels: Invalid value: "-0": a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex used for validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?')
+Finding issues in commit messages using git format
+WARNING: No release found for SeldonIO/sig-mlops-seldon-jenkins-x and tag v0.0.29 so creating a new release
+Updated the release information at https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x/releases/tag/v0.0.29
+generated: /workspace/source/charts/sklearn-model-server/templates/release.yaml
+Created Release sig-mlops-seldon-jenkins-x-0-0-29 resource in namespace **
+Updating PipelineActivity seldonio-sig-mlops-seldon-jenkins-x-master-38 with version 0.0.29
+Updated PipelineActivities seldonio-sig-mlops-seldon-jenkins-x-master-38 with release notes URL: https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x/releases/tag/v0.0.29
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-6hfpg-38[0m stage [32mrelease-promote[0m and container [32mstep-helm-release[0m
+WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
+Adding missing Helm repo: storage.googleapis.com https://storage.googleapis.com/chartmuseum.jenkins-x.io
+Read credentials for https://storage.googleapis.com/chartmuseum.jenkins-x.io from vault helm/repos
+Successfully added Helm repository storage.googleapis.com.
+Adding missing Helm repo: jenkins-x-chartmuseum http://jenkins-x-chartmuseum:8080
+Read credentials for http://jenkins-x-chartmuseum:8080 from vault helm/repos
+Successfully added Helm repository jenkins-x-chartmuseum.
+error: failed to build dependencies for chart from directory '.': failed to build the dependencies of chart '.': failed to run 'helm dependency build' command in directory '.', output: 'Error: chart metadata (Chart.yaml) missing'
+[31m
+Pipeline failed on stage 'release-promote' : container 'step-helm-release'. The execution of the pipeline has stopped.[0m
