@@ -34,7 +34,7 @@ Now we want to start setting up our repo. For this we'll just leverage the MLOps
 
 
 ```python
-!jx create quickstart --org "SeldonIO" --project-name "mlops-deployment" --filter "mlops-quickstart"
+!jx create quickstart - -org "SeldonIO" - -project-name "mlops-deployment" - -filter "mlops-quickstart"
 ```
 
 What this command does is basically the following:
@@ -58,8 +58,8 @@ Let's have a look at what was created:
     * `kind_test_all.sh` - File that spins up KIND cluster and runs your model
     * `test_e2e_model_server.py` - End-to-end tests to run on your model
     * `requirements-dev.py` - Requirements for your end to end tests
-* `assets/` 
-    * `model.pickle` - Sample hello world model that takes any input and returns a random number
+* `src/` 
+    * `model.joblib` - Sample trained model that is deployed when importing project
     * `train_model.py` - Sample code to train your model and output a model.pickle
     * `test_model.py` - Sample code to unit test your model 
     * `requirements.txt` - Example requirements file with supported versions
@@ -74,13 +74,24 @@ We will need the following dependencies in order to run the Python code:
 
 
 ```python
-%%writefile assets/requirements-dev.txt
-scikit-learn==0.20.1
-pytest==5.1.1
-joblib==0.13.2
+!cat src/requirements.txt
 ```
 
-    Overwriting requirements-dev.txt
+    # You need the right versions for your model server:
+    # Model servers: https://docs.seldon.io/projects/seldon-core/en/latest/servers/overview.html
+    
+    # For SKLearn you need a pickle and the following:
+    scikit-learn==0.20.3 # See https://docs.seldon.io/projects/seldon-core/en/latest/servers/sklearn.html
+    joblib==0.13.2
+    
+    # For XGBoost you need v 0.82 and an xgboost export (not a pickle)
+    #xgboost==0.82
+    
+    # For MLFlow you need the following, and a link to the built model:
+    #mlflow==1.1.0
+    #pandas==0.25
+    
+    # For tensorflow, any models supported by tensorflow serving (less than v2.0)
 
 
 We can now install the dependencies using the make command:
@@ -202,7 +213,7 @@ print(f"Accuracy: {np.mean(predicted == twenty_test.target):.2f}")
 
 ## Deploy the model
 
-Now we want to be able to deploy the model we just trained. For this we'll follow the standard steps to wrap the model using Seldon.
+Now we want to be able to deploy the model we just trained. This will just be as simple as updated the model binary.
 
 ### Save the trained model
 
@@ -221,69 +232,30 @@ joblib.dump(text_clf, "src/model.joblib")
 
 
 
-### Build wrapper that loads model
+### Update your unit test
 
-Now we can actually write a simple wrapper that basically loads the model and exposes the logic through the `predict` function.
-
-
-```python
-%%writefile src/SklearnServer.py
-
-import joblib, logging
-
-class SklearnServer:
-    def __init__(self):
-        self._model = joblib.load(f"model.joblib")
-
-    def predict(self, data, feature_names=[], metadata={}):
-        logging.info(data)
-
-        prediction = self._model.predict(data)
-
-        logging.info(prediction)
-
-        return prediction
-```
-
-    Overwriting src/SklearnServer.py
-
-
-### Test the wrapper
-
-It's best practice to write a set of unit tests to make sure that our wrapper works as expected.
-
-We'll write a single unit test and then we'll run it using Pytest
+We'll write a very simple unit test that make sure that the model loads and runs as expected.
 
 
 ```python
-%%writefile src/test_SklearnServer.py
+%%writefile src/test_model.py
 
-from .SklearnServer import SklearnServer
 import numpy as np
-
 from unittest import mock
-
-# Libraries to patch:
 import joblib
 
-EXPECTED_RESPONSE = np.array([0, 1])
+EXPECTED_RESPONSE = np.array([3, 3])
 
-class FakeModel:
-    def predict(self, df):
-        return EXPECTED_RESPONSE
-
-
-@mock.patch("joblib.load", return_value=FakeModel())
-def test_sklearn_server(*args, **kwargs):
+def test_model(*args, **kwargs):
     data = ["text 1", "text 2"]
 
-    s = SklearnServer()
-    result = s.predict(data)
+    m = joblib.load("model.joblib")
+    result = m.predict(data)
     assert all(result == EXPECTED_RESPONSE)
 
 ```
 
-    Overwriting src/test_SklearnServer.py
+    Overwriting src/test_model.py
 
 
 
@@ -292,154 +264,127 @@ def test_sklearn_server(*args, **kwargs):
 ```
 
     cat: VERSION: No such file or directory
-    Makefile:25: warning: overriding recipe for target 'make'
-    Makefile:22: warning: ignoring old recipe for target 'make'
-    pytest -s --verbose -W ignore 2>&1
+    Makefile:12: warning: overriding recipe for target 'make'
+    Makefile:9: warning: ignoring old recipe for target 'make'
+    Makefile:15: warning: overriding recipe for target 'make'
+    Makefile:12: warning: ignoring old recipe for target 'make'
+    (cd src && pytest -s --verbose -W ignore 2>&1)
     [1m============================= test session starts ==============================[0m
     platform linux -- Python 3.7.3, pytest-5.1.1, py-1.8.0, pluggy-0.12.0 -- /home/alejandro/miniconda3/envs/reddit-classification/bin/python
     cachedir: .pytest_cache
-    rootdir: /home/alejandro/Programming/kubernetes/seldon/sig-mlops-example
+    rootdir: /home/alejandro/Programming/kubernetes/seldon/sig-mlops-example/src
     plugins: cov-2.7.1, forked-1.0.2, localserver-0.5.0
     collected 1 item                                                               [0m
     
-    src/test_SklearnServer.py::test_sklearn_server [32mPASSED[0m
+    test_model.py::test_model [32mPASSED[0m
     
-    [32m[1m============================== 1 passed in 1.72s ===============================[0m
+    [32m[1m============================== 1 passed in 2.21s ===============================[0m
 
 
-### Define config files
+### Updating Integration Tests
 
-Now that our wrapper works as expected, we just need to write a set of configuration files, including dependencies and the type of model.
-
-
-```python
-%%writefile src/requirements.txt
-scikit-learn==0.20.1
-joblib==0.13.2
-```
-
-    Overwriting src/requirements.txt
+We can also now update the integration tests. This is another very simple step, where we'll want to test this model specifically.
 
 
 
 ```python
-%%writefile src/seldon_model.conf
-MODEL_NAME=SklearnServer
-API_TYPE=REST
-SERVICE_TYPE=MODEL
-PERSISTENCE=0
+%%writefile integration/test_e2e_sklearn_server.py
+from seldon_core.seldon_client import SeldonClient
+import numpy as np
+
+API_AMBASSADOR = "localhost:8003"
+
+def test_sklearn_server():
+    data = ["From: brian@ucsd.edu (Brian Kantor)\nSubject: Re: HELP for Kidney Stones ..............\nOrganization: The Avant-Garde of the Now, Ltd.\nLines: 12\nNNTP-Posting-Host: ucsd.edu\n\nAs I recall from my bout with kidney stones, there isn't any\nmedication that can do anything about them except relieve the pain.\n\nEither they pass, or they have to be broken up with sound, or they have\nto be extracted surgically.\n\nWhen I was in, the X-ray tech happened to mention that she'd had kidney\nstones and children, and the childbirth hurt less.\n\nDemerol worked, although I nearly got arrested on my way home when I barfed\nall over the police car parked just outside the ER.\n\t- Brian\n",
+            'From: rind@enterprise.bih.harvard.edu (David Rind)\nSubject: Re: Candida(yeast) Bloom, Fact or Fiction\nOrganization: Beth Israel Hospital, Harvard Medical School, Boston Mass., USA\nLines: 37\nNNTP-Posting-Host: enterprise.bih.harvard.edu\n\nIn article <1993Apr26.103242.1@vms.ocom.okstate.edu>\n banschbach@vms.ocom.okstate.edu writes:\n>are in a different class.  The big question seems to be is it reasonable to \n>use them in patients with GI distress or sinus problems that *could* be due \n>to candida blooms following the use of broad-spectrum antibiotics?\n\nI guess I\'m still not clear on what the term "candida bloom" means,\nbut certainly it is well known that thrush (superficial candidal\ninfections on mucous membranes) can occur after antibiotic use.\nThis has nothing to do with systemic yeast syndrome, the "quack"\ndiagnosis that has been being discussed.\n\n\n>found in the sinus mucus membranes than is candida.  Women have been known \n>for a very long time to suffer from candida blooms in the vagina and a \n>women is lucky to find a physician who is willing to treat the cause and \n>not give give her advise to use the OTC anti-fungal creams.\n\nLucky how?  Since a recent article (randomized controlled trial) of\noral yogurt on reducing vaginal candidiasis, I\'ve mentioned to a \nnumber of patients with frequent vaginal yeast infections that they\ncould try eating 6 ounces of yogurt daily.  It turns out most would\nrather just use anti-fungal creams when they get yeast infections.\n\n>yogurt dangerous).  If this were a standard part of medical practice, as \n>Gordon R. says it is, then the incidence of GI distress and vaginal yeast \n>infections should decline.\n\nAgain, this just isn\'t what the systemic yeast syndrome is about, and\nhas nothing to do with the quack therapies that were being discussed.\nThere is some evidence that attempts to reinoculate the GI tract with\nbacteria after antibiotic therapy don\'t seem to be very helpful in\nreducing diarrhea, but I don\'t think anyone would view this as a\nquack therapy.\n-- \nDavid Rind\nrind@enterprise.bih.harvard.edu\n']
+    labels = [2, 2]
+    
+    sc = SeldonClient(
+        gateway="ambassador", 
+        gateway_endpoint=API_AMBASSADOR,
+        deployment_name="news-classifier-server",
+        payload_type="ndarray",
+        namespace="default",
+        transport="rest")
+
+    result = sc.predict(np.array(data))
+    assert all(result.response.data.ndarray.values == labels)
 ```
 
-    Overwriting src/seldon_model.conf
+    Overwriting integration/test_e2e_sklearn_server.py
 
 
-### Build container with s2i untils
+### Now push your changes to trigger the pipeline
+Because Jenkins X has created a CI GitOps pipeline for our repo we just need to push our changes to run all the tests
 
-Now we leverage the `s2i` util to convert our wrapped model into a fully fledged REST server that exposes the logic through an API.
+We can do this by running our good old git commands:
 
 
 ```bash
 %%bash
-SELDON_BASE_WRAPPER="seldonio/seldon-core-s2i-python36:0.12"
-s2i build src/. $SELDON_BASE_WRAPPER sklearn-server:0.1 \
-    --environment-file src/seldon_model.conf
+git add .
+git push origin master
 ```
 
-    ---> Installing application source...
-    ---> Installing dependencies ...
-    Looking in links: /whl
-    Collecting scikit-learn==0.20.1 (from -r requirements.txt (line 1))
-      WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
-    Downloading https://files.pythonhosted.org/packages/10/26/d04320c3edf2d59b1fcd0720b46753d4d603a76e68d8ad10a9b92ab06db2/scikit_learn-0.20.1-cp36-cp36m-manylinux1_x86_64.whl (5.4MB)
-    Collecting joblib==0.13.2 (from -r requirements.txt (line 2))
-      WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
-    Downloading https://files.pythonhosted.org/packages/cd/c1/50a758e8247561e58cb87305b1e90b171b8c767b15b12a1734001f41d356/joblib-0.13.2-py2.py3-none-any.whl (278kB)
-    Collecting scipy>=0.13.3 (from scikit-learn==0.20.1->-r requirements.txt (line 1))
-      WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
-    Downloading https://files.pythonhosted.org/packages/29/50/a552a5aff252ae915f522e44642bb49a7b7b31677f9580cfd11bcc869976/scipy-1.3.1-cp36-cp36m-manylinux1_x86_64.whl (25.2MB)
-    Requirement already satisfied: numpy>=1.8.2 in /usr/local/lib/python3.6/site-packages (from scikit-learn==0.20.1->-r requirements.txt (line 1)) (1.17.2)
-    Installing collected packages: scipy, scikit-learn, joblib
-    Successfully installed joblib-0.13.2 scikit-learn-0.20.1 scipy-1.3.1
-    WARNING: Url '/whl' is ignored. It is either a non-existing path or lacks a specific scheme.
-    WARNING: You are using pip version 19.1, however version 19.3.1 is available.
-    You should consider upgrading via the 'pip install --upgrade pip' command.
-    Build completed successfully
+We can now see that the pipeline has been triggered by viewing our activities:
 
+
+
+```python
+!jx get activity -f sig-mlops-seldon-jenkins-x | tail
+```
+
+        Create Effective Pipeline                          11h28m57s       7s Succeeded 
+        Create Tekton Crds                                 11h28m50s      11s Succeeded 
+      test and deploy sklearn server                       11h28m38s    1m54s Succeeded 
+        Credential Initializer 59hx6                       11h28m38s       0s Succeeded 
+        Working Dir Initializer Fslpm                      11h28m38s       1s Succeeded 
+        Place Tools                                        11h28m37s       1s Succeeded 
+        Git Source Seldonio Sig Mlops Seldon Jenki Ftjtn   11h28m36s       6s Succeeded https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git
+        Git Merge                                          11h28m30s       1s Succeeded 
+        Run Tests                                          11h28m29s      13s Succeeded 
+        Build And Push Images                              11h28m16s    1m32s Succeeded 
+
+
+
+```python
+Similarly we can actually see the logs of our running job:
+```
 
 
 ```bash
 %%bash
-YOUR_DOCKER_USERNAME="seldonio"
-
-docker tag sklearn-server:0.1 $YOUR_DOCKER_USERNAME/sklearn-server:0.1
-docker push $YOUR_DOCKER_USERNAME/sklearn-server:0.1
+YOUR_GIT_USERNAME=SeldonIO
+jx get build logs "$YOUR_GIT_USERNAME/sig-mlops-seldon-jenkins-x/master #7 release" | tail
 ```
 
-### Deploy model 
-
-Now that we've built our model, we can push it and deploy it to our kubernetes cluster for evaluation
-
-
-```python
-!cat charts/sklearn-model-server/templates/sklearn-seldon-deployment.yaml
-```
-
-    apiVersion: machinelearning.seldon.io/v1alpha2
-    kind: SeldonDeployment
-    metadata:
-      name: {{ .Values.model.name }}
-    spec:
-      name: {{ .Values.model.name }}
-      predictors:
-      - name: default
-        graph:
-          name: {{ .Values.model.name }}-processor
-          endpoint:
-            type: REST
-          type: MODEL
-          children: []
-          parameters:
-          - name: model_uri
-            type: STRING
-            value: "gs://news_classifier/model/"
-        componentSpecs:
-        - spec:
-            containers:
-            - image: "{{ .Values.image.respository }}:{{ .Values.image.tag }}"
-              imagePullPolicy: {{ .Values.image.pullPolicy }}
-              name: {{ .Values.model.name }}-processor
-              env:
-    {{- range $pkey, $pval := .Values.env }}
-              - name: {{ $pkey }}
-                value: {{ quote $pval }}
-    {{- end }}
-            terminationGracePeriodSeconds: 1
-        replicas: 1
-        engineResources: {}
-        svcOrchSpec: {}
-        traffic: 100
-        explainer:
-          containerSpec:
-            name: ''
-            resources: {}
-      annotations:
-        seldon.io/engine-seldon-log-messages-externally: 'true'
+    error: Failed to parse docker reference ELDON_BASE_WRAPPER
+    ERROR: An error occurred: unable to get metadata for ELDON_BASE_WRAPPER:latest
+    ERROR: Suggested solution: check image name
+    ERROR: If the problem persists consult the docs at https://github.com/openshift/source-to-image/tree/master/docs. Eventually reach us on freenode #openshift or file an issue at https://github.com/openshift/source-to-image/issues providing us with a log from your build using log output level 3.
+    Makefile:8: recipe for target 'build' failed
+    make: *** [build] Error 1
+    Stopping Docker: dockerProgram process in pidfile '/var/run/docker-ssd.pid', 1 process(es), refused to die.
+    [31m
+    Pipeline failed on stage 'test-and-deploy-sklearn-server' : container 'step-build-and-push-images'. The execution of the pipeline has stopped.[0m
     
 
 
+    wrote: /tmp/086bfe4e-d4ac-46e6-baa1-71d4ef7abca4095596018
+
+
+## Managing your Jenkins X Application
+
+Now that we've deployed our MLOps repo, Jenkins X now has created an application from our charts.
+
+This application gets automatically syncd into the Jenkins X staging environment, which you can see:
+
 
 ```python
-!helm install charts/sklearn-model-server
+!kubectl get pods -n jx-staging
 ```
 
-    seldondeployment.machinelearning.seldon.io/news-classifier-server created
-
-
-### Test server by sending request
-
-Now that we've deployed our model, we can test it by sending a POST request. 
-
-This can be done using our SeldonCore Python client, or by just sending it through `curl`. Both are shown below:
+### Test your application in the staging environment
 
 
 ```python
@@ -451,9 +396,9 @@ url = !kubectl get svc ambassador -o jsonpath='{.status.loadBalancer.ingress[0].
 sc = SeldonClient(
     gateway="ambassador", 
     gateway_endpoint="localhost:80",
-    deployment_name="news-classifier-server",
+    deployment_name="mlops-server",
     payload_type="ndarray",
-    namespace="default",
+    namespace="jx-staging",
     transport="rest")
 
 response = sc.predict(data=np.array([twenty_test.data[0]]))
@@ -477,7 +422,7 @@ response.response.data
 %%bash
 curl -X POST -H 'Content-Type: application/json' \
      -d "{'data': {'names': ['text'], 'ndarray': ['Hello world this is a test']}}" \
-    http://localhost/seldon/default/news-classifier-server/api/v0.1/predictions
+    http://localhost/seldon/jx-staging/news-classifier-server/api/v0.1/predictions
 ```
 
     {
@@ -503,15 +448,7 @@ curl -X POST -H 'Content-Type: application/json' \
     100   350  100   278  100    72   7942   2057 --:--:-- --:--:-- --:--:-- 10294
 
 
-
-```python
-!helm delete charts/sklearn-model-server
-```
-
-    seldondeployment.machinelearning.seldon.io "news-classifier-server" deleted
-
-
-# Setting up CI before CD
+# Diving into our continuous integration
 
 We have now separated our model development into two chunks: 
 
@@ -565,94 +502,24 @@ Basically we can define the steps of what happens upon `release` - i.e. when a P
 
 You can see that the steps are exactly the same for both release and PR for now - namely, we run `make install_dev test` which basically installs all the dependencies and runs all the tests.
 
-### Setting up the repo with the pipeline
+# Integration tests
 
-In order for the Pipeline to be executed on PR and release, we must import it into our Jenkins X cluster. 
+Now that we have a model that we want to be able to deploy, we want to make sure that we run end-to-end tests on that model to make sure everything works as expected.
 
-We can do this by running this command:
+For this we will leverage the same framework that the Kubernetes team uses to test Kubernetes itself: KIND.
 
+KIND stands for Kubernetes in Docker, and is used to isolate a Kubernetes environent for end-to-end tests.
 
-```python
-!jx import --no-draft=true
-```
+In our case, we will be able to leverage to create an isolated environment, where we'll be able to test our model.
 
-As soon as we import the repository into Jenkins X, the release path gets triggered.
+For this, the steps we'll have to carry out include:
 
-We can see the activities that have been triggered by running:
-
-
-```python
-!jx get activities
-```
+1. Authenticate your docker with the jx CLI
+2. Add the steps in the `Jenkins-X.yml` to run this in the production cluster
+3. Leverage the `kind_run_all.sh` script that creates a KIND cluster and runs the tests
 
 
-```python
-And we can actually see the logs of what is happening at every step by running:
-```
-
-
-```python
-!jx get build logs "$GIT_USERNAME/seldon-jx-mlops/master #1 release"
-```
-
-
-```python
-As we can see, the `release` trigger is working as expected. We can now trigger the PR by opening a PR.
-
-For this, let's add a small change and push a PR:
-```
-
-
-```bash
-%%bash 
-
-# Create new branch and move into it
-git checkout -b feature-1
-
-# Add an extra space at the end
-echo " " >> jenkins-x.yml
-git add jenkins-x
-git commit -m "Added extra space to trigger master"
-git push origin feature-1
-
-# Now create pull request
-git request-pull -p origin/master ./
-```
-
-
-```python
-Once we create the pull request we can visualise that the PR has been created and the bot has commented.
-
-We would now also be able to see that the tests are now running, and similar to above we can see the logs with:
-```
-
-
-```python
-!kubectl get build logs "$GIT_USERNAME/seldon-jx-mlops/pr-1 #1 pr-build"
-```
-
-### Pushing images automatically
-Now that we're able to build some tests, we want to update the images so we can have the latest on each release.
-
-For this, we will have to add a couple of things, including:
-
-1. The task in the `jenkins-x.yml` file that would allow us to build and push the image
-2. Adding an authentication token so we can push images
-3. Mounting the docker config in the `jenkins-x.yml` to provide docker authentications (to push images)
-4. A script that starts a docker daemon and then builds+psuhes the images
-
-#### JX Task to Build and Push image
-
-For this, we would just have to append the following task in our jenkins file:
-    
-```
-    - name: build-and-push-images
-      command: bash
-      args:
-      - assets/scripts/build_and_push_docker_daemon.sh
-```
-
-#### Add docker auth to your cluster
+## Add docker auth to your cluster
 
 Adding a docker authentication with Jenkins X can be done through a JX CLI command, which is the following:
 
@@ -660,7 +527,24 @@ Adding a docker authentication with Jenkins X can be done through a JX CLI comma
 
 This comamnd will use these credentials to authenticate with Docker and create an auth token (which expires).
 
-#### Config to provide docker authentication
+## Extend JenkinsX file for integration
+
+Now that we have the test that would run for the integration tests, we need to extend the JX pipeline to run this.
+
+This extension is quite simple, and only requires adding the following line:
+    
+```
+            - name: run-end-to-end-tests
+              command: bash
+              args:
+              - integration/kind_test_all.sh
+```
+
+This line would be added in both the PR and release pipelines so that we can run integration tests then.
+
+It is also possible to move the integration tests into a separate jenkins-x file such as `jenkins-x-integration.yml` by leveraging [Contexts & Schedules]() which basically allow us to extend the functionality of Prow by writing our own triggers, however this is outside the scope of this tutorial.
+
+### Config to provide docker authentication
 
 This piece is slightly more extensive, as we will need to use Docker to build out containers due to the dependency on `s2i` to build the model wrappers.
 
@@ -716,140 +600,7 @@ The reason why this is required is in order to be able to run the docker daemon:
               privileged: true
 ```
 
-### Updating Jenkins X file and testing
-
-Now that we've gotten a breakdown of the different additions for the `jenkins-x.yml` file, we can update it:
-
-
-```python
-%%writefile jenkins-x.yml
-buildPack: none
-pipelineConfig:
-  pipelines:
-    release:
-      pipeline:
-        agent:
-          image: seldonio/core-builder:0.4
-        stages:
-        - name: build-and-test
-          parallel:
-          - name: test-and-deploy-sklearn-server
-            steps:
-            - name: test-sklearn-server
-              steps:
-              - name: run-tests
-                command: make
-                args:
-                - install_dev
-                - test
-            - name: build-and-push-images
-              command: bash
-              args:
-              - assets/scripts/build_and_push_docker_daemon.sh
-        options:
-          containerOptions:
-            volumeMounts:
-              - mountPath: /lib/modules
-                name: modules
-                readOnly: true
-              - mountPath: /sys/fs/cgroup
-                name: cgroup
-              - name: dind-storage
-                mountPath: /var/lib/docker
-              - mountPath: /builder/home/.docker
-                name: jenkins-docker-config-volume
-            securityContext:
-              privileged: true
-          volumes:
-            - name: modules
-              hostPath:
-                path: /lib/modules
-                type: Directory
-            - name: cgroup
-              hostPath:
-                path: /sys/fs/cgroup
-                type: Directory
-            - name: dind-storage
-              emptyDir: {}
-            - name: jenkins-docker-config-volume
-              secret:
-                items:
-                - key: config.json
-                  path: config.json
-                secretName: jenkins-docker-cfg
-    pullRequest:
-      pipeline:
-        agent:
-          image: seldonio/core-builder:0.4
-        stages:
-        - name: build-and-test
-          parallel:
-          - name: test-and-deploy-sklearn-server
-            steps:
-            - name: test-sklearn-server
-              steps:
-              - name: run-tests
-                command: make
-                args:
-                - install_dev
-                - test
-            - name: build-and-push-images
-              command: bash
-              args:
-              - assets/scripts/build_and_push_docker_daemon.sh
-        options:
-          containerOptions:
-            volumeMounts:
-              - mountPath: /lib/modules
-                name: modules
-                readOnly: true
-              - mountPath: /sys/fs/cgroup
-                name: cgroup
-              - name: dind-storage
-                mountPath: /var/lib/docker
-              - mountPath: /builder/home/.docker
-                name: jenkins-docker-config-volume
-            securityContext:
-              privileged: true
-          volumes:
-            - name: modules
-              hostPath:
-                path: /lib/modules
-                type: Directory
-            - name: cgroup
-              hostPath:
-                path: /sys/fs/cgroup
-                type: Directory
-            - name: dind-storage
-              emptyDir: {}
-            - name: jenkins-docker-config-volume
-              secret:
-                items:
-                - key: config.json
-                  path: config.json
-                secretName: jenkins-docker-cfg
-```
-
-    Overwriting jenkins-x.yml
-
-
-# Integration tests
-
-Now that we have a model that we want to be able to deploy, we want to make sure that we run end-to-end tests on that model to make sure everything works as expected.
-
-For this we will leverage the same framework that the Kubernetes team uses to test Kubernetes itself: KIND.
-
-KIND stands for Kubernetes in Docker, and is used to isolate a Kubernetes environent for end-to-end tests.
-
-In our case, we will be able to leverage to create an isolated environment, where we'll be able to test our model.
-
-For this, the steps we'll have to carry out include:
-
-1. Leverage the `kind_run_all.sh` script that creates a KIND cluster and runs the tests
-2. A simple test that performs integration testing on our model
-3. The steps in the `Jenkins-X.yml` to run this in the production cluster
-
-### Kind run all script
+## Kind run all integration tests script
 
 The kind_run_all may seem complicated at first, but it's actually quite simple. 
 
@@ -943,59 +694,36 @@ service docker stop || true
 ```
 
 
+# Promote your application
+Now that we've verified that our CI pipeline is working, we want to promote our application to production
 
-### Write an integration test
-
-Now that we have the script that can kick everything off, we need too write a test that would run.
-
-For this initial test, we'll write something very simple - it will be the exact test we had previously, but instead of running it by just calling the Python function, we will be sending a POST request using the Python SeldonClient.
+This can be done with our JX CLI:
 
 
 ```python
-%%writefile integration/test_e2e_sklearn_server.py
+!jx promote application --...
+```
+
+## Test your production application
+
+Once your production application is deployed, you can test it using the same script, but in the `jx-production` namespace:
+
+
+```python
 from seldon_core.seldon_client import SeldonClient
 import numpy as np
 
-API_AMBASSADOR = "localhost:8003"
+url = !kubectl get svc ambassador -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 
-def test_sklearn_server():
-    data = ["From: brian@ucsd.edu (Brian Kantor)\nSubject: Re: HELP for Kidney Stones ..............\nOrganization: The Avant-Garde of the Now, Ltd.\nLines: 12\nNNTP-Posting-Host: ucsd.edu\n\nAs I recall from my bout with kidney stones, there isn't any\nmedication that can do anything about them except relieve the pain.\n\nEither they pass, or they have to be broken up with sound, or they have\nto be extracted surgically.\n\nWhen I was in, the X-ray tech happened to mention that she'd had kidney\nstones and children, and the childbirth hurt less.\n\nDemerol worked, although I nearly got arrested on my way home when I barfed\nall over the police car parked just outside the ER.\n\t- Brian\n",
-            'From: rind@enterprise.bih.harvard.edu (David Rind)\nSubject: Re: Candida(yeast) Bloom, Fact or Fiction\nOrganization: Beth Israel Hospital, Harvard Medical School, Boston Mass., USA\nLines: 37\nNNTP-Posting-Host: enterprise.bih.harvard.edu\n\nIn article <1993Apr26.103242.1@vms.ocom.okstate.edu>\n banschbach@vms.ocom.okstate.edu writes:\n>are in a different class.  The big question seems to be is it reasonable to \n>use them in patients with GI distress or sinus problems that *could* be due \n>to candida blooms following the use of broad-spectrum antibiotics?\n\nI guess I\'m still not clear on what the term "candida bloom" means,\nbut certainly it is well known that thrush (superficial candidal\ninfections on mucous membranes) can occur after antibiotic use.\nThis has nothing to do with systemic yeast syndrome, the "quack"\ndiagnosis that has been being discussed.\n\n\n>found in the sinus mucus membranes than is candida.  Women have been known \n>for a very long time to suffer from candida blooms in the vagina and a \n>women is lucky to find a physician who is willing to treat the cause and \n>not give give her advise to use the OTC anti-fungal creams.\n\nLucky how?  Since a recent article (randomized controlled trial) of\noral yogurt on reducing vaginal candidiasis, I\'ve mentioned to a \nnumber of patients with frequent vaginal yeast infections that they\ncould try eating 6 ounces of yogurt daily.  It turns out most would\nrather just use anti-fungal creams when they get yeast infections.\n\n>yogurt dangerous).  If this were a standard part of medical practice, as \n>Gordon R. says it is, then the incidence of GI distress and vaginal yeast \n>infections should decline.\n\nAgain, this just isn\'t what the systemic yeast syndrome is about, and\nhas nothing to do with the quack therapies that were being discussed.\nThere is some evidence that attempts to reinoculate the GI tract with\nbacteria after antibiotic therapy don\'t seem to be very helpful in\nreducing diarrhea, but I don\'t think anyone would view this as a\nquack therapy.\n-- \nDavid Rind\nrind@enterprise.bih.harvard.edu\n']
-    labels = [2, 2]
-    
-    sc = SeldonClient(
-        gateway="ambassador", 
-        gateway_endpoint=API_AMBASSADOR,
-        deployment_name="news-classifier-server",
-        payload_type="ndarray",
-        namespace="default",
-        transport="rest")
+sc = SeldonClient(
+    gateway="ambassador", 
+    gateway_endpoint="localhost:80",
+    deployment_name="mlops-server",
+    payload_type="ndarray",
+    namespace="jx-production",
+    transport="rest")
 
-    result = sc.predict(np.array(data))
-    assert all(result.response.data.ndarray.values == labels)
-```
+response = sc.predict(data=np.array([twenty_test.data[0]]))
 
-    Overwriting integration/test_e2e_sklearn_server.py
-
-
-### Extend JenkinsX file for integration
-
-Now that we have the test that would run for the integration tests, we need to extend the JX pipeline to run this.
-
-This extension is quite simple, and only requires adding the following line:
-    
-```
-            - name: run-end-to-end-tests
-              command: bash
-              args:
-              - integration/kind_test_all.sh
-```
-
-This line would be added in both the PR and release pipelines so that we can run integration tests then.
-
-It is also possible to move the integration tests into a separate jenkins-x file such as `jenkins-x-integration.yml` by leveraging [Contexts & Schedules]() which basically allow us to extend the functionality of Prow by writing our own triggers, however this is outside the scope of this tutorial.
-
-
-```python
-
+response.response.data
 ```
