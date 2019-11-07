@@ -2,7 +2,7 @@ buildPack: none
 pipelineConfig:
   pipelines:
     release:
-      build:
+      pipeline:
         agent:
           image: seldonio/core-builder:0.4
         stages:
@@ -51,7 +51,7 @@ pipelineConfig:
                   path: config.json
                 secretName: jenkins-docker-cfg
     pullRequest:
-      build:
+      pipeline:
         agent:
           image: seldonio/core-builder:0.4
         stages:
