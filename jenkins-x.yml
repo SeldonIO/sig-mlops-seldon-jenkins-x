@@ -17,12 +17,14 @@ pipelineConfig:
           agent:
             image: jenkinsxio/jx:2.0.598
           steps:
+          - name: list-dirs
+            command: ls
           - name: changelog
-            sh: "cd charts/sklearn-model-server && jx step changelog --batch-mode --version v$(cat ./VERSION)"
+            sh: "cd charts/sklearn-model-server && jx step changelog --batch-mode --version v$(cat ../../VERSION)"
           - name: helm-release
             sh: "cd charts/sklearn-model-server && jx step helm release"
           - name: helm-release-promote
-            sh: "cd charts/sklearn-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ./VERSION)"
+            sh: "cd charts/sklearn-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ../../VERSION)"
         options:
           containerOptions:
             volumeMounts:
