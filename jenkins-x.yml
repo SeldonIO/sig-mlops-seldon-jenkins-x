@@ -16,10 +16,10 @@ pipelineConfig:
         - name: promote
           dir: ./charts/preview
           steps:
-          - sh: make preview
-            name: make-preview
-          - sh: jx preview --app $APP_NAME --dir ../..
-            name: jx-preview
+          - name: make-preview
+            sh: make preview
+          - name: jx-preview
+            sh: jx preview --app $APP_NAME --dir ../..
         options:
           containerOptions:
             volumeMounts:
@@ -66,14 +66,12 @@ pipelineConfig:
         - name: promote
           dir: ./charts/REPLACE_ME_APP_NAME
           steps:
-          - sh: jx step changelog --batch-mode --version v\$(cat ../../VERSION)
-            name: changelog
-          - comment: release the helm chart
+          - name: changelog
+            sh: jx step changelog --batch-mode --version v\$(cat ../../VERSION)
+          - name: helm-release
             sh: jx step helm release
-            name: helm-release
-          - comment: promote through all 'Auto' promotion Environments
+          - name: helm-release
             sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
-            name: jx-promote
         options:
           containerOptions:
             volumeMounts:
