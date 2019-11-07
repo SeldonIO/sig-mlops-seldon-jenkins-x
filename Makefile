@@ -1,6 +1,4 @@
 VERSION := $(shell cat VERSION)
-IMAGE_NAME = seldonio/nmt-model-server
-SELDON_BASE_WRAPPER = seldonio/seldon-core-s2i-python3:0.13
 
 readme:
 	jupyter nbconvert README.ipynb --to markdown
