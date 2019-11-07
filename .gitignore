@@ -5,7 +5,6 @@ __pycache__/
 
 # Models
 *.h5
-*.joblib
 *.pkl
 *.pickle
 *.dill
