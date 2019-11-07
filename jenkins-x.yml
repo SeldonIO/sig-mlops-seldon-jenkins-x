@@ -13,7 +13,7 @@ pipelineConfig:
             args:
             - install_dev
             - test
-        - name: promote
+        - name: pr-promote
           steps:
           - name: make-preview
             sh: cd charts/preview && make preview
@@ -62,7 +62,7 @@ pipelineConfig:
             args:
             - install_dev
             - test
-        - name: promote
+        - name: release-promote
           steps:
           - name: changelog
             sh: cd charts/sklearn-model-server && jx step changelog --batch-mode --version v\$(cat ../../VERSION)
