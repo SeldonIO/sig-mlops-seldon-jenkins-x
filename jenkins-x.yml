@@ -14,12 +14,11 @@ pipelineConfig:
             - install_dev
             - test
         - name: promote
-          dir: ./charts/preview
           steps:
           - name: make-preview
-            sh: make preview
+            sh: cd charts/preview && make preview
           - name: jx-preview
-            sh: jx preview --app $APP_NAME --dir ../..
+            sh: cd charts/preview && jx preview --app $APP_NAME --dir ../..
         options:
           containerOptions:
             volumeMounts:
@@ -64,14 +63,13 @@ pipelineConfig:
             - install_dev
             - test
         - name: promote
-          dir: ./charts/REPLACE_ME_APP_NAME
           steps:
           - name: changelog
-            sh: jx step changelog --batch-mode --version v\$(cat ../../VERSION)
+            sh: cd charts/sklearn-model-server && jx step changelog --batch-mode --version v\$(cat ../../VERSION)
           - name: helm-release
-            sh: jx step helm release
+            sh: cd charts/sklearn-model-server && jx step helm release
           - name: helm-release
-            sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+            sh: cd charts/sklearn-model-server && jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
         options:
           containerOptions:
             volumeMounts:
