@@ -1,0 +1,26 @@
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-545qw-20[0m stage [32mmeta-pipeline[0m and container [32mstep-credential-initializer-kpqn7[0m
+{"level":"warn","ts":1573144547.1035557,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573144547.104431,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-545qw-20[0m stage [32mmeta-pipeline[0m and container [32mstep-working-dir-initializer-nbkq5[0m
+{"level":"warn","ts":1573144548.4847639,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573144548.4871123,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-545qw-20[0m stage [32mmeta-pipeline[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-545qw-20[0m stage [32mmeta-pipeline[0m and container [32mstep-git-source-meta-seldonio-sig-mlops-seldon-4cwbm[0m
+{"level":"warn","ts":1573144554.6836658,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573144556.5635204,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ 511b5b78db61ea8c812e51e2c465faa9d4548a3f in path /workspace/source"}
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-545qw-20[0m stage [32mmeta-pipeline[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:511b5b78db61ea8c812e51e2c465faa9d4548a3f
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-545qw-20[0m stage [32mmeta-pipeline[0m and container [32mstep-merge-pull-refs[0m
+SKIP merge-pull-refs: Nothing to merge
+
+Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-545qw-20[0m stage [32mmeta-pipeline[0m and container [32mstep-create-effective-pipeline[0m
+error: failed to create effective pipeline for release: validation failed for Pipeline: the steps field is only valid in legacy build packs, not in jenkins-x.yml. Please remove it and list the nested stages sequentially instead.: stages[0].steps[1].steps
+[31m
+Pipeline failed on stage 'meta-pipeline' : container 'step-create-effective-pipeline'. The execution of the pipeline has stopped.[0m
