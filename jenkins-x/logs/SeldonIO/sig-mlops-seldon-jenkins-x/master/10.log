@@ -1,0 +1,42 @@
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-nfgrx-10[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-credential-initializer-tjkmg[0m
+{"level":"warn","ts":1573113192.9627793,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573113192.9636981,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-nfgrx-10[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-working-dir-initializer-sbfnw[0m
+{"level":"warn","ts":1573113194.005804,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573113194.0982945,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-nfgrx-10[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-nfgrx-10[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-git-source-seldonio-sig-mlops-seldon-jenki-rchpr[0m
+{"level":"warn","ts":1573113201.0029135,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573113203.1791103,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ v0.0.10 in path /workspace/source"}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-nfgrx-10[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:b3af90bce02a146b48ff6c74bb00bf0c0f75818c
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-nfgrx-10[0m stage [32mtest-and-deploy-sklearn-server[0m and container [32mstep-run-tests[0m
+cat: VERSION: No such file or directory
+Makefile:12: warning: overriding recipe for target 'make'
+Makefile:9: warning: ignoring old recipe for target 'make'
+Makefile:15: warning: overriding recipe for target 'make'
+Makefile:12: warning: ignoring old recipe for target 'make'
+pip install -r src/requirements.txt
+Collecting scikit-learn==0.20.3
+  Downloading https://files.pythonhosted.org/packages/5e/82/c0de5839d613b82bddd088599ac0bbfbbbcbd8ca470680658352d2c435bd/scikit_learn-0.20.3-cp36-cp36m-manylinux1_x86_64.whl (5.4MB)
+Collecting joblib==0.13.2
+  Downloading https://files.pythonhosted.org/packages/cd/c1/50a758e8247561e58cb87305b1e90b171b8c767b15b12a1734001f41d356/joblib-0.13.2-py2.py3-none-any.whl (278kB)
+Collecting scipy>=0.13.3
+  Downloading https://files.pythonhosted.org/packages/29/50/a552a5aff252ae915f522e44642bb49a7b7b31677f9580cfd11bcc869976/scipy-1.3.1-cp36-cp36m-manylinux1_x86_64.whl (25.2MB)
+Collecting numpy>=1.8.2
+  Downloading https://files.pythonhosted.org/packages/0e/46/ae6773894f7eacf53308086287897ec568eac9768918d913d5b9d366c5db/numpy-1.17.3-cp36-cp36m-manylinux1_x86_64.whl (20.0MB)
+Installing collected packages: numpy, scipy, scikit-learn, joblib
+Successfully installed joblib-0.13.2 numpy-1.17.3 scikit-learn-0.20.3 scipy-1.3.1
+(cd src && pytest -s --verbose -W ignore 2>&1)
+/bin/sh: 1: pytest: not found
+Makefile:12: recipe for target 'test' failed
+make: *** [test] Error 127
+[31m
+Pipeline failed on stage 'test-and-deploy-sklearn-server' : container 'step-run-tests'. The execution of the pipeline has stopped.[0m
