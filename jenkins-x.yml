@@ -22,7 +22,7 @@ pipelineConfig:
           - name: changelog
             sh: "cd charts/sklearn-model-server && jx step changelog --batch-mode --version v$(cat ../../VERSION)"
           - name: helm-release
-            sh: "unset TILLER_NAMESPACE && jx step helm release --dir charts/sklearn-model-server/ --remote"
+            sh: "unset TILLER_NAMESPACE && jx step helm env && jx step helm release --dir charts/sklearn-model-server/ --remote"
           - name: helm-release-promote
             sh: "cd charts/sklearn-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ../../VERSION)"
         options:
