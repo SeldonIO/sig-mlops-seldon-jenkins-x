@@ -1,32 +1,23 @@
 
-# A practical guide to MLOps with Seldon Core and Jenkins X
+# End-to-end MLOps with Seldon Core and Jenkins X
 
-This tutorial provides an end-to-end tutorial that shows you how to build you MLOps pipeline with Seldon Core and Jenkins X:
+This tutorial provides an end-to-end hands-on tutorial that shows you how to build your own re-usable MLOps pipelines leveraging Seldon Core and Jenkins X. 
 
-* Seldon Core is a machine learning deployment & orchestration engine in Kubernetes
-* Jenkins X provides automated CI+CD for Kubernetes with Preview Environments on Pull Requests
+By the end of this tutorial, you will be able to:
 
-## Current limitations
+* Quickly spin up a project based on the MLOps quickstart
+* Leverage Seldon's prepackaged model servers
+* Leverage Seldon's language wrapper for custom model servers
+* Run unit tests using Jenkins X 
+* Run end-to-end tests for your model with KIND (Kubernetes in Docker)
+* Promote your model as a Jenkins X application across multiple (staging / prod) environments
 
-### Prepackaged Model Servers vs Language Wrappers
-
-Ideally we would be able to show in this tutorial two workflows: 1) creating a model server, and 2) deploying multiple applications with that model server. At this point in time, there is only one workflow in this repository, which consists of building and deploying a single Seldon Model using a language wrapper, which means that the docker image is built every time. 
-
-### Quickstart and buildpack
-
-A lot of the logic in this tutorial could simplified by creating a quickstart project and possibly a build pack (although most of the logic can be built as part of a build pack initially).
-
-### Docker builds in cluster required
-
-Currently, the images are built and pushed using a pod with a docker daemon, this is because of the current dependency Seldon has on S2i (Source-to-image) to build the image wrappers.
-
-Furthermore, docker is also required to run the end-to-end tests, which leverage KIND (kubernetes in docker) to spin up a test kubernetes cluster inside of a Kubernetes Pod.
 
 ## Intuitive explanation
 
 In this project, we will be building an MLOps workflow to deploy your production machine learning models by buiding a re-usable pre-packaged model server through CI, and then deploying individual models using CD.
 
-[TODO: ARCHITECTURAL DIAGRAM]
+![](images/jenkins-x-full-diagram.jpg)
 
 ## Requirements
 
@@ -39,20 +30,39 @@ Once you set everything up, we'll be ready to kick off 🚀
 
 # Setting up repo
 
-Now we want to start setting up our repo. For this we will create the following structure:
+Now we want to start setting up our repo. For this we'll just leverage the MLOps quickstart by running:
+
+
+```python
+!jx create quickstart --org "SeldonIO" --project-name "mlops-deployment" --filter "mlops-quickstart"
+```
+
+What this command does is basically the following:
+
+* Find the quickstarts in the organisation "SeldonIO"
+* Find the quickstart named "mlops-quickstart"
+* Build the project with name "mlops-deployment"
+
+You now have a repo where you'll be able to leverage [Seldon's pre-packaged model servers](https://docs.seldon.io/projects/seldon-core/en/latest/servers/overview.html).
+
+Let's have a look at what was created:
 
 * `jenkins-x.yml` - File specifying the CI / CD steps 
 * `Makefile` - Commands to build and test model
 * `README.(md|ipynb)` - This file!
 * `VERSION` - A file containing the version which is updated upon each release
-* `charts/` - Folder containing the deployment configuration information
-* `integration/` - Folder containing integration tests using KIND
-* `src`
-    * `ModelName.py` - Model server wrapper file
-    * `test_ModelName.py` - Unit test for model server
-    * `requirements-dev.txt` - Requirements for testing
-    * `requirements.txt` - Requiremnets for prod
-
+* `charts/` 
+    * `mlops-server/` - Folder containing helm charts to deploy your model
+    * `preview/` - Folder containing reference to helm charts to create preview environments
+* `integration/`
+    * `kind_test_all.sh` - File that spins up KIND cluster and runs your model
+    * `test_e2e_model_server.py` - End-to-end tests to run on your model
+    * `requirements-dev.py` - Requirements for your end to end tests
+* `assets/` 
+    * `model.pickle` - Sample hello world model that takes any input and returns a random number
+    * `train_model.py` - Sample code to train your model and output a model.pickle
+    * `test_model.py` - Sample code to unit test your model 
+    * `requirements.txt` - Example requirements file with supported versions
 
 ## Let's train a model locally
 
@@ -64,7 +74,7 @@ We will need the following dependencies in order to run the Python code:
 
 
 ```python
-%%writefile requirements-dev.txt
+%%writefile assets/requirements-dev.txt
 scikit-learn==0.20.1
 pytest==5.1.1
 joblib==0.13.2

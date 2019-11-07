@@ -5,18 +5,14 @@ SELDON_BASE_WRAPPER = seldonio/seldon-core-s2i-python3:0.13
 readme:
 	jupyter nbconvert README.ipynb --to markdown
 
-build:
-	s2i build src/. ${SELDON_BASE_WRAPPER} ${IMAGE_NAME}:${VERSION} \
-		--environment-file src/seldon_model.conf
-
-push_to_dockerhub:
-	docker push $(IMAGE_NAME):$(VERSION)
+make train_model: install_dev
+	(cd src && python train_model.py)
 
 make test:
 	(cd src && pytest -s --verbose -W ignore 2>&1)
 
 make install_dev:
-	pip install -r src/requirements-dev.txt
+	pip install -r src/requirements.txt
 
 install_integration_dev:
 	pip install -r integration/requirements-dev.txt
