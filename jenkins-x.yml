@@ -13,12 +13,14 @@ pipelineConfig:
             args:
             - install_dev
             - test
-        - name: pr-promote
+        - name: release-promote
           steps:
-          - name: make-preview
-            sh: cd charts/preview && make preview
-          - name: jx-preview
-            sh: cd charts/preview && jx preview --app $APP_NAME --dir ../..
+          - name: changelog
+            sh: cd charts/sklearn-model-server && jx step changelog --batch-mode --version v\$(cat ../../VERSION)
+          - name: helm-release
+            sh: cd charts/sklearn-model-server && jx step helm release
+          - name: helm-release-promote
+            sh: cd charts/sklearn-model-server && jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
         options:
           containerOptions:
             volumeMounts:
@@ -62,14 +64,12 @@ pipelineConfig:
             args:
             - install_dev
             - test
-        - name: release-promote
+        - name: pr-promote
           steps:
-          - name: changelog
-            sh: cd charts/sklearn-model-server && jx step changelog --batch-mode --version v\$(cat ../../VERSION)
-          - name: helm-release
-            sh: cd charts/sklearn-model-server && jx step helm release
-          - name: helm-release-promote
-            sh: cd charts/sklearn-model-server && jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+          - name: make-preview
+            sh: cd charts/preview && make preview
+          - name: jx-preview
+            sh: cd charts/preview && jx preview --app $APP_NAME --dir .
         options:
           containerOptions:
             volumeMounts:
