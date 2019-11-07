@@ -1,7 +1,7 @@
 
 image:
-  repository: seldonio/sklearn-model-server
-  tag: 0.1
+  repository: gcr.io/seldon-core-ops/sig-mlops-seldon-jenkins-x
+  tag: 0.0.18
   pullPolicy: IfNotPresent
 
 # define environment variables here as a map of key: value
