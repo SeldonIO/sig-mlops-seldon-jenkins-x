@@ -13,7 +13,8 @@ pipelineConfig:
             args:
             - install_dev
             - test
-        - dir: ./charts/preview
+        - name: promote
+          dir: ./charts/preview
           steps:
           - sh: make preview
             name: make-preview
@@ -55,16 +56,15 @@ pipelineConfig:
         agent:
           image: seldonio/core-builder:0.4
         stages:
-        - name: build-and-test
-          parallel:
-          - name: test-and-deploy-sklearn-server
-            steps:
-            - name: run-tests
-              command: make
-              args:
-              - install_dev
-              - test
-        - dir: ./charts/REPLACE_ME_APP_NAME
+        - name: test-and-deploy-sklearn-server
+          steps:
+          - name: run-tests
+            command: make
+            args:
+            - install_dev
+            - test
+        - name: promote
+          dir: ./charts/REPLACE_ME_APP_NAME
           steps:
           - sh: jx step changelog --batch-mode --version v\$(cat ../../VERSION)
             name: changelog
