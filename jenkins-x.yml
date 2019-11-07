@@ -2,14 +2,6 @@ buildPack: none
 pipelineConfig:
   pipelines:
     release:
-      promote:
-        steps:
-        - dir: ./charts/preview
-          steps:
-          - sh: make preview
-            name: make-preview
-          - sh: jx preview --app $APP_NAME --dir ../..
-            name: jx-preview
       build:
         agent:
           image: seldonio/core-builder:0.4
@@ -21,6 +13,12 @@ pipelineConfig:
             args:
             - install_dev
             - test
+          - dir: ./charts/preview
+            steps:
+            - sh: make preview
+              name: make-preview
+            - sh: jx preview --app $APP_NAME --dir ../..
+              name: jx-preview
         options:
           containerOptions:
             volumeMounts:
@@ -53,18 +51,6 @@ pipelineConfig:
                   path: config.json
                 secretName: jenkins-docker-cfg
     pullRequest:
-      promote:
-        steps:
-        - dir: ./charts/REPLACE_ME_APP_NAME
-          steps:
-          - sh: jx step changelog --batch-mode --version v\$(cat ../../VERSION)
-            name: changelog
-          - comment: release the helm chart
-            sh: jx step helm release
-            name: helm-release
-          - comment: promote through all 'Auto' promotion Environments
-            sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
-            name: jx-promote
       build:
         agent:
           image: seldonio/core-builder:0.4
@@ -78,6 +64,16 @@ pipelineConfig:
               args:
               - install_dev
               - test
+          - dir: ./charts/REPLACE_ME_APP_NAME
+            steps:
+            - sh: jx step changelog --batch-mode --version v\$(cat ../../VERSION)
+              name: changelog
+            - comment: release the helm chart
+              sh: jx step helm release
+              name: helm-release
+            - comment: promote through all 'Auto' promotion Environments
+              sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+              name: jx-promote
         options:
           containerOptions:
             volumeMounts:
