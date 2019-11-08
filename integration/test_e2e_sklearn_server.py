@@ -16,5 +16,5 @@ def test_sklearn_server():
         namespace="default",
         transport="rest")
 
-    result = sc.predict(np.array(data))
+    result = sc.predict(data=np.array(data))
     assert all(result.response.data.ndarray.values == labels)
