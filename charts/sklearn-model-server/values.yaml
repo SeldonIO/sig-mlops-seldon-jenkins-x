@@ -1,13 +1,10 @@
 
-image:
-  repository: seldonio/sklearn-model-server
-  tag: 0.1
-  pullPolicy: IfNotPresent
-
 # define environment variables here as a map of key: value
 env:
-- SELDON_LOG_LEVEL: DEBUG
+  SELDON_LOG_LEVEL: DEBUG
 
 model:
   name: sklearn-model-server
+  type: SKLEARN_SERVER
+
 

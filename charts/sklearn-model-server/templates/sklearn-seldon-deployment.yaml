@@ -7,21 +7,14 @@ spec:
   predictors:
   - name: default
     graph:
-      name: {{ .Values.model.name }}-processor
-      endpoint:
-        type: REST
-      type: MODEL
+      name: default
+      implementation: {{ .Values.model.type }}
       children: []
-      parameters:
-      - name: model_uri
-        type: STRING
-        value: "gs://news_classifier/model/"
+      modelUri: gs://news_classifier/model
     componentSpecs:
     - spec:
         containers:
-        - image: "{{ .Values.image.respository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          name: {{ .Values.model.name }}-processor
+        - name: default
           env:
 {{- range $pkey, $pval := .Values.env }}
           - name: {{ $pkey }}
