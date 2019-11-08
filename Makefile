@@ -32,7 +32,7 @@ install_helm:
 	kubectl rollout status deploy/tiller-deploy -n kube-system
 
 install_ambassador:
-	helm install stable/ambassador -f ambassador_values.yaml --name ambassador --set crds.keep=false --namespace seldon --set replicaCount=1
+	helm install stable/ambassador -f integration/ambassador_values.yaml --name ambassador --set crds.keep=false --namespace seldon --set replicaCount=1
 	kubectl rollout status deployment.apps/ambassador --namespace seldon
 
 install_seldon:
