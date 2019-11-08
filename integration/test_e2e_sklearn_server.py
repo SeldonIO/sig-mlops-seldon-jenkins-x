@@ -11,10 +11,10 @@ def test_sklearn_server():
     
     sc = SeldonClient(
         gateway="ambassador",
-        gateway_endpoint="34.89.5.169:80",
+        gateway_endpoint=API_AMBASSADOR,
         deployment_name="sklearn-model-server",
         payload_type="ndarray",
-        namespace="jx-staging",
+        namespace="default",
         transport="rest")
 
     sm_result = sc.predict(data=np.array(data))
