@@ -43,11 +43,11 @@ if [[ ${KIND_EXIT_VALUE} -eq 0 ]]; then
     S2I_EXIT_VALUE=$?
 
     ## INSTALL ALL REQUIRED DEPENDENCIES
-    make install_dev
+    make install_integration_dev
     INSTALL_EXIT_VALUE=$?
 
     ## RUNNING TESTS AND CAPTURING ERROR
-    make test
+    make test_integration
     TEST_EXIT_VALUE=$?
 fi
 

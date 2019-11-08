@@ -12,8 +12,12 @@ make test:
 make install_dev:
 	pip install -r src/requirements.txt
 
+# INTEGRATION TESTS
 install_integration_dev:
 	pip install -r integration/requirements-dev.txt
+
+test_integration:
+	(cd integration && pytest -s --verbose -W ignore 2>&1)
 
 deploy_model:
 	helm install charts/sklearn-model-server
@@ -21,8 +25,6 @@ deploy_model:
 delete_model:
 	helm delete charts/sklearn-model-server
 
-
-# INTEGRATION TESTS
 install_helm:
 	kubectl -n kube-system create sa tiller
 	kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
