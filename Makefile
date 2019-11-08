@@ -37,6 +37,7 @@ install_ambassador:
 
 install_seldon:
 	helm install seldon-core-operator --name seldon-core-operator --repo https://storage.googleapis.com/seldon-charts --namespace seldon
+	kubectl rollout status -n seldon deployment/seldon-controller-manager
 
 create_namespaces:
 	kubectl create namespace seldon || echo "Namespace seldon already exists"
