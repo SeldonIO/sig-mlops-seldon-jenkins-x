@@ -20,10 +20,10 @@ test_integration:
 	(cd integration && pytest -s --verbose -W ignore 2>&1)
 
 deploy_model:
-	helm install charts/sklearn-model-server
+	helm install charts/sklearn-model-server --namespace seldon
 
 delete_model:
-	helm delete charts/sklearn-model-server
+	helm delete charts/sklearn-model-server  --namespace seldon
 
 install_helm:
 	kubectl -n kube-system create sa tiller
@@ -36,7 +36,7 @@ install_ambassador:
 	kubectl rollout status deployment.apps/ambassador --namespace seldon
 
 install_seldon:
-	helm install seldon-core --name seldon-core --repo https://storage.googleapis.com/seldon-charts --namespace seldon
+	helm install seldon-core-operator --name seldon-core-operator --repo https://storage.googleapis.com/seldon-charts --namespace seldon
 
 create_namespaces:
 	kubectl create namespace seldon || echo "Namespace seldon already exists"

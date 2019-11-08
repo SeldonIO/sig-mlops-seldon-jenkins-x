@@ -14,7 +14,7 @@ def test_sklearn_server():
         gateway_endpoint=API_AMBASSADOR,
         deployment_name="sklearn-model-server",
         payload_type="ndarray",
-        namespace="default",
+        namespace="seldon",
         transport="rest")
 
     sm_result = sc.predict(data=np.array(data))
