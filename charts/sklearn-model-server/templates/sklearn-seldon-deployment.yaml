@@ -11,6 +11,10 @@ spec:
       implementation: {{ .Values.model.type }}
       children: []
       modelUri: gs://news_classifier/model
+      parameters:
+      - name: method
+        type: STRING
+        value: predict
     componentSpecs:
     - spec:
         containers:

@@ -1,4 +1,5 @@
 from seldon_core.seldon_client import SeldonClient
+from seldon_core.utils import seldon_message_to_json
 import numpy as np
 
 API_AMBASSADOR = "localhost:8003"
@@ -9,12 +10,14 @@ def test_sklearn_server():
     labels = [2, 2]
     
     sc = SeldonClient(
-        gateway="ambassador", 
-        gateway_endpoint=API_AMBASSADOR,
+        gateway="ambassador",
+        gateway_endpoint="34.89.5.169:80",
         deployment_name="sklearn-model-server",
         payload_type="ndarray",
-        namespace="default",
+        namespace="jx-staging",
         transport="rest")
 
-    result = sc.predict(data=np.array(data))
-    assert all(result.response.data.ndarray.values == labels)
+    sm_result = sc.predict(data=np.array(data))
+    result = seldon_message_to_json(sm_result.response)
+    values = result.get("data", {}).get("ndarray", {})
+    assert all(values[0] == labels)
