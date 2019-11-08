@@ -45,7 +45,7 @@ create_namespaces:
 kind_setup: install_helm install_ambassador install_seldon create_namespaces deploy_model
 
 kind_create_cluster:
-	kind create cluster --config kind_config.yaml
+	kind create cluster --config integration/kind_config.yaml
 
 kind_delete_cluster:
 	kind delete cluster
