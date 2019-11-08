@@ -11,7 +11,7 @@ def test_sklearn_server():
     sc = SeldonClient(
         gateway="ambassador", 
         gateway_endpoint=API_AMBASSADOR,
-        deployment_name="news-classifier-server",
+        deployment_name="sklearn-model-server",
         payload_type="ndarray",
         namespace="default",
         transport="rest")
