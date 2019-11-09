@@ -6,16 +6,14 @@ pipelineConfig:
         agent:
           image: seldonio/core-builder:0.4
         stages:
-        - name: test-and-deploy-sklearn-server
+        - name: release-tests
           steps:
-          - name: run-tests
+          - name: release-unit-tests
             command: make
             args:
             - install_dev
             - test
-        - name: test-and-deploy-sklearn-server
-          steps:
-          - name: end-to-end-tests
+          - name: release-end-to-end-tests
             command: bash
             args:
             - integration/kind_test_all.sh
@@ -23,11 +21,11 @@ pipelineConfig:
           agent:
             image: gcr.io/jenkinsxio/builder-go:2.0.916-264
           steps:
-          - name: changelog
+          - name: release-changelog
             sh: "cd charts/sklearn-model-server && jx step changelog --batch-mode --version v$(cat ../../VERSION)"
-          - name: helm-release
+          - name: release-publish-chart
             sh: "cd charts/sklearn-model-server && jx step helm release --dir ."
-          - name: helm-release-promote
+          - name: release-promote-staging
             sh: "cd charts/sklearn-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ../../VERSION)"
         options:
           containerOptions:
@@ -65,26 +63,24 @@ pipelineConfig:
         agent:
           image: seldonio/core-builder:0.4
         stages:
-        - name: test-and-deploy-sklearn-server
+        - name: pr-tests
           steps:
-          - name: run-tests
+          - name: pr-unit-tests
             command: make
             args:
             - install_dev
             - test
-        - name: test-and-deploy-sklearn-server
-          steps:
-          - name: end-to-end-tests
+          - name: pr-end-to-end-tests
             command: bash
             args:
             - integration/kind_test_all.sh
-        - name: pr-promote
+        - name: pr-preview
           agent:
             image: gcr.io/jenkinsxio/builder-go:2.0.916-264
           steps:
-          - name: make-preview
+          - name: pr-build-preview
             sh: cd charts/preview && make preview
-          - name: jx-preview
+          - name: pr-deploy-preview
             sh: cd charts/preview && jx preview --app $APP_NAME --dir .
         options:
           containerOptions:
