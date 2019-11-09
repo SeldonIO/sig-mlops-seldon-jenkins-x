@@ -22,8 +22,8 @@ def test_sklearn_server():
         transport="rest")
 
     sm_result = sc.predict(data=np.array(data))
-    logging.info(sm_result)
+    print(sm_result)
     result = seldon_message_to_json(sm_result.response)
-    logging.info(result)
+    print(result)
     values = result.get("data", {}).get("ndarray", {})
-    assert all(values == labels)
+    assert (values == labels)
