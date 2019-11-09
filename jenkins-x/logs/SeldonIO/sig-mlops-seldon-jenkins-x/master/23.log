@@ -1,29 +1,29 @@
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-szjh7-23[0m stage [32mrelease-promote[0m and container [32mstep-credential-initializer-q8nzd[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-tr5nh-23[0m stage [32mrelease-promote[0m and container [32mstep-credential-initializer-q8nzd[0m
 {"level":"warn","ts":1573305901.955457,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
 {"level":"info","ts":1573305901.9561338,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-szjh7-23[0m stage [32mrelease-promote[0m and container [32mstep-working-dir-initializer-nbhwc[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-tr5nh-23[0m stage [32mrelease-promote[0m and container [32mstep-working-dir-initializer-nbhwc[0m
 {"level":"warn","ts":1573305902.8779159,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
 {"level":"info","ts":1573305902.9096577,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-szjh7-23[0m stage [32mrelease-promote[0m and container [32mstep-place-tools[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-tr5nh-23[0m stage [32mrelease-promote[0m and container [32mstep-place-tools[0m
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-szjh7-23[0m stage [32mrelease-promote[0m and container [32mstep-git-source-seldonio-sig-mlops-seldon-jenki-j9qjw[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-tr5nh-23[0m stage [32mrelease-promote[0m and container [32mstep-git-source-seldonio-sig-mlops-seldon-jenki-j9qjw[0m
 {"level":"warn","ts":1573305909.0606236,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
 {"level":"info","ts":1573305910.9858718,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ v0.0.53 in path /workspace/source"}
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-szjh7-23[0m stage [32mrelease-promote[0m and container [32mstep-git-merge[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-tr5nh-23[0m stage [32mrelease-promote[0m and container [32mstep-git-merge[0m
 Using SHAs from PULL_REFS=master:cc581f540bf2bf4066357b9f56841daac600cb50
 WARNING: no SHAs to merge, falling back to initial cloned commit
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-szjh7-23[0m stage [32mrelease-promote[0m and container [32mstep-next-version[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-tr5nh-23[0m stage [32mrelease-promote[0m and container [32mstep-next-version[0m
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-szjh7-23[0m stage [32mrelease-promote[0m and container [32mstep-tag-version[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-tr5nh-23[0m stage [32mrelease-promote[0m and container [32mstep-tag-version[0m
 Updating chart version in charts/sklearn-model-server/Chart.yaml to 0.0.54
 Tag v0.0.54 created and pushed to remote origin
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-szjh7-23[0m stage [32mrelease-promote[0m and container [32mstep-release-changelog[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-tr5nh-23[0m stage [32mrelease-promote[0m and container [32mstep-release-changelog[0m
 Converted /workspace/source/charts/sklearn-model-server to an unshallow repository
 Generating change log from git ref 8cfa103f7cdb003eb03f4aa3ea5e1dd309b06b00 => cb4cb01eede9ed475cf9ce281e686cd8a4b965d0
 WARNING: No release found for SeldonIO/sig-mlops-seldon-jenkins-x and tag v0.0.54 so creating a new release
@@ -33,7 +33,7 @@ Created Release sig-mlops-seldon-jenkins-x-0-0-54 resource in namespace **
 Updating PipelineActivity seldonio-sig-mlops-seldon-jenkins-x-master-23 with version 0.0.54
 Updated PipelineActivities seldonio-sig-mlops-seldon-jenkins-x-master-23 with release notes URL: https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x/releases/tag/v0.0.54
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-szjh7-23[0m stage [32mrelease-promote[0m and container [32mstep-release-publish-chart[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-tr5nh-23[0m stage [32mrelease-promote[0m and container [32mstep-release-publish-chart[0m
 WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
 Adding missing Helm repo: storage.googleapis.com https://storage.googleapis.com/chartmuseum.jenkins-x.io
 Read credentials for https://storage.googleapis.com/chartmuseum.jenkins-x.io from vault helm/repos
@@ -45,7 +45,7 @@ WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenk
 Uploading chart file sklearn-model-server-0.0.54.tgz to http://jenkins-x-chartmuseum:8080/api/charts
 Received 201 response: {"saved":true}
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-szjh7-23[0m stage [32mrelease-promote[0m and container [32mstep-release-promote-staging[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-tr5nh-23[0m stage [32mrelease-promote[0m and container [32mstep-release-promote-staging[0m
 WARNING: prow based install so skip waiting for the merge of Pull Requests to go green as currently there is an issue with gettingstatuses from the PR, see https://github.com/jenkins-x/**/issues/2410
 Promoting app sklearn-model-server version 0.0.54 to namespace **-staging
 Created Pull Request: https://github.com/SeldonIO/environment-**-production-cluster-staging/pull/5
