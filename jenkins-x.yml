@@ -21,9 +21,9 @@ pipelineConfig:
           agent:
             image: gcr.io/jenkinsxio/builder-go:2.0.916-264
           steps:
-          - sh: echo \$(jx-release-version) > VERSION
+          - sh: "echo $(jx-release-version) > VERSION"
             name: next-version
-          - sh: jx step tag --version \$(cat VERSION)
+          - sh: "jx step tag --version $(cat VERSION)"
             name: tag-version
           - name: release-changelog
             sh: "cd charts/sklearn-model-server && jx step changelog --batch-mode --version v$(cat ../../VERSION)"
