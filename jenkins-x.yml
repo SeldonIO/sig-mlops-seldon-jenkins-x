@@ -6,17 +6,17 @@ pipelineConfig:
         agent:
           image: seldonio/core-builder:0.4
         stages:
-#        - name: release-tests
-#          steps:
-#          - name: release-unit-tests
-#            command: make
-#            args:
-#            - install_dev
-#            - test
-#          - name: release-end-to-end-tests
-#            command: bash
-#            args:
-#            - integration/kind_test_all.sh
+        - name: release-tests
+          steps:
+          - name: release-unit-tests
+            command: make
+            args:
+            - install_dev
+            - test
+          - name: release-end-to-end-tests
+            command: bash
+            args:
+            - integration/kind_test_all.sh
         - name: release-promote
           agent:
             image: gcr.io/jenkinsxio/builder-go:2.0.916-264
