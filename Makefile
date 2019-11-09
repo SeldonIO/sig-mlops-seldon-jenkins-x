@@ -7,7 +7,8 @@ make train_model: install_dev
 	(cd src && python train_model.py)
 
 make test:
-	(cd src && pytest -s --verbose -W ignore 2>&1)
+	(cd src && \
+		pytest -s --verbose -W ignore --log-level=INFO 2>&1)
 
 make install_dev:
 	pip install -r src/requirements.txt
@@ -17,7 +18,8 @@ install_integration_dev:
 	pip install -r integration/requirements-dev.txt
 
 test_integration:
-	(cd integration && pytest -s --verbose -W ignore 2>&1)
+	(cd integration && \
+		pytest -s --verbose -W ignore --log-level=INFO 2>&1)
 
 deploy_model:
 	helm install charts/sklearn-model-server --namespace seldon --name sklearn-model-server
