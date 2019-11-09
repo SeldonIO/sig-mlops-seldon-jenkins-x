@@ -38,10 +38,6 @@ if [[ ${KIND_EXIT_VALUE} -eq 0 ]]; then
     make kind_setup
     SETUP_EXIT_VALUE=$?
 
-    # BUILD S2I BASE IMAGES
-    make build
-    S2I_EXIT_VALUE=$?
-
     ## INSTALL ALL REQUIRED DEPENDENCIES
     make install_integration_dev
     INSTALL_EXIT_VALUE=$?
