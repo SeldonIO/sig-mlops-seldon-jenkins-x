@@ -16,7 +16,6 @@ cleanup:
     helm.sh/hook-delete-policy: hook-succeeded
 
 preview:
-  image:
-    repository:
-    tag:
-    pullPolicy: IfNotPresent
+  model: 
+    name: seldon-model-server
+    type: SKLEARN_SERVER

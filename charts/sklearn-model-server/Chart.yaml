@@ -1,4 +1,0 @@
-apiVersion: v1
-description: A Helm chart for MLOps
-name: sklearn-model-server
-version: 0.0.1-SNAPSHOT

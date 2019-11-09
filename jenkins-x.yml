@@ -26,11 +26,11 @@ pipelineConfig:
           - sh: "jx step tag --version $(cat VERSION)"
             name: tag-version
           - name: release-changelog
-            sh: "cd charts/sklearn-model-server && jx step changelog --batch-mode --version v$(cat ../../VERSION)"
+            sh: "cd charts/seldon-model-server && jx step changelog --batch-mode --version v$(cat ../../VERSION)"
           - name: release-publish-chart
-            sh: "cd charts/sklearn-model-server && jx step helm release --dir ."
+            sh: "cd charts/seldon-model-server && jx step helm release --dir ."
           - name: release-promote-staging
-            sh: "cd charts/sklearn-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ../../VERSION)"
+            sh: "cd charts/seldon-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ../../VERSION)"
         options:
           containerOptions:
             volumeMounts:

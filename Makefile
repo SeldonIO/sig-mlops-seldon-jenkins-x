@@ -22,12 +22,12 @@ test_integration:
 		pytest -s --verbose -W ignore --log-level=INFO 2>&1)
 
 deploy_model:
-	helm install charts/sklearn-model-server --namespace seldon --name sklearn-model-server
-	kubectl rollout status -n seldon deploy/sklearn-model-server-default-cbb4caa
+	helm install charts/seldon-model-server --namespace seldon --name $$APP_NAME
+	kubectl rollout status -n seldon deploy/seldon-model-server-default-cbb4caa
 
 delete_model:
-	helm delete sklearn-model-server
-	helm del --purge sklearn-model-server || echo "Model deleted"
+	helm delete $$APP_NAME
+	helm del --purge $$APP_NAME || echo "Model deleted"
 
 install_helm:
 	kubectl -n kube-system create sa tiller
