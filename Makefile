@@ -21,6 +21,7 @@ test_integration:
 
 deploy_model:
 	helm install charts/sklearn-model-server --namespace seldon
+	kubectl rollout status -n seldon deploy/sklearn-model-server-default-cbb4caa
 
 delete_model:
 	helm delete charts/sklearn-model-server  --namespace seldon

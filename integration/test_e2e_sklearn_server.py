@@ -1,8 +1,20 @@
 from seldon_core.seldon_client import SeldonClient
 from seldon_core.utils import seldon_message_to_json
 import numpy as np
+from subprocess import run
+import time
+
 
 API_AMBASSADOR = "localhost:8003"
+
+def wait_for_rollout(deploymentName):
+    ret = run("kubectl rollout status -n test1 deploy/" + deploymentName, shell=True)
+    while ret.returncode > 0:
+        time.sleep(1)
+        ret = run(
+            "kubectl rollout status -n test1 deploy/" + deploymentName, shell=True
+        )
+
 
 def test_sklearn_server():
     data = ["From: brian@ucsd.edu (Brian Kantor)\nSubject: Re: HELP for Kidney Stones ..............\nOrganization: The Avant-Garde of the Now, Ltd.\nLines: 12\nNNTP-Posting-Host: ucsd.edu\n\nAs I recall from my bout with kidney stones, there isn't any\nmedication that can do anything about them except relieve the pain.\n\nEither they pass, or they have to be broken up with sound, or they have\nto be extracted surgically.\n\nWhen I was in, the X-ray tech happened to mention that she'd had kidney\nstones and children, and the childbirth hurt less.\n\nDemerol worked, although I nearly got arrested on my way home when I barfed\nall over the police car parked just outside the ER.\n\t- Brian\n",
