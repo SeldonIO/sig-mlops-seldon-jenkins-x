@@ -1,54 +1,485 @@
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-credential-initializer-mch8m[0m
-{"level":"warn","ts":1573145140.926673,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
-{"level":"info","ts":1573145140.9286404,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-tests[0m and container [32mstep-credential-initializer-vsmml[0m
+{"level":"warn","ts":1573307284.804182,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573307284.8050983,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-working-dir-initializer-t9j66[0m
-{"level":"warn","ts":1573145141.8529537,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
-{"level":"info","ts":1573145141.857519,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-tests[0m and container [32mstep-working-dir-initializer-nk769[0m
+{"level":"warn","ts":1573307285.9002342,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573307285.9018302,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-place-tools[0m
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-tests[0m and container [32mstep-place-tools[0m
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-git-source-meta-seldonio-sig-mlops-seldon-b58r7[0m
-{"level":"warn","ts":1573145146.9767683,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
-{"level":"info","ts":1573145148.762944,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ bb3dc98b181af67ee91b2222641f996a3dc27f71 in path /workspace/source"}
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-tests[0m and container [32mstep-git-source-seldonio-sig-mlops-seldon-jenki-g785m[0m
+{"level":"warn","ts":1573307292.0095239,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573307293.3943763,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ v0.0.55 in path /workspace/source"}
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-git-merge[0m
-Using SHAs from PULL_REFS=master:bb3dc98b181af67ee91b2222641f996a3dc27f71
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-tests[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:344dc3d2b4885ad16ab08cd1656f1a6f8f99ddb6
 WARNING: no SHAs to merge, falling back to initial cloned commit
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-merge-pull-refs[0m
-SKIP merge-pull-refs: Nothing to merge
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-tests[0m and container [32mstep-release-unit-tests[0m
+cat: VERSION: No such file or directory
+Makefile:10: warning: overriding recipe for target 'make'
+Makefile:7: warning: ignoring old recipe for target 'make'
+Makefile:14: warning: overriding recipe for target 'make'
+Makefile:10: warning: ignoring old recipe for target 'make'
+pip install -r src/requirements.txt
+Collecting scikit-learn==0.20.3
+  Downloading https://files.pythonhosted.org/packages/5e/82/c0de5839d613b82bddd088599ac0bbfbbbcbd8ca470680658352d2c435bd/scikit_learn-0.20.3-cp36-cp36m-manylinux1_x86_64.whl (5.4MB)
+Collecting joblib==0.13.2
+  Downloading https://files.pythonhosted.org/packages/cd/c1/50a758e8247561e58cb87305b1e90b171b8c767b15b12a1734001f41d356/joblib-0.13.2-py2.py3-none-any.whl (278kB)
+Collecting pytest==5.1.1
+  Downloading https://files.pythonhosted.org/packages/ef/3b/5652e27e048ae086f79ce9c4ce8a2da6bad1e9590788e5768aafc6f375ef/pytest-5.1.1-py3-none-any.whl (223kB)
+Collecting numpy>=1.8.2
+  Downloading https://files.pythonhosted.org/packages/0e/46/ae6773894f7eacf53308086287897ec568eac9768918d913d5b9d366c5db/numpy-1.17.3-cp36-cp36m-manylinux1_x86_64.whl (20.0MB)
+Collecting scipy>=0.13.3
+  Downloading https://files.pythonhosted.org/packages/29/50/a552a5aff252ae915f522e44642bb49a7b7b31677f9580cfd11bcc869976/scipy-1.3.1-cp36-cp36m-manylinux1_x86_64.whl (25.2MB)
+Collecting more-itertools>=4.0.0
+  Downloading https://files.pythonhosted.org/packages/45/dc/3241eef99eb45f1def35cf93af35d1cf9ef4c0991792583b8f33ea41b092/more_itertools-7.2.0-py3-none-any.whl (57kB)
+Collecting importlib-metadata>=0.12; python_version < "3.8"
+  Downloading https://files.pythonhosted.org/packages/f6/d2/40b3fa882147719744e6aa50ac39cf7a22a913cbcba86a0371176c425a3b/importlib_metadata-0.23-py2.py3-none-any.whl
+Collecting py>=1.5.0
+  Downloading https://files.pythonhosted.org/packages/76/bc/394ad449851729244a97857ee14d7cba61ddb268dce3db538ba2f2ba1f0f/py-1.8.0-py2.py3-none-any.whl (83kB)
+Collecting wcwidth
+  Downloading https://files.pythonhosted.org/packages/7e/9f/526a6947247599b084ee5232e4f9190a38f398d7300d866af3ab571a5bfe/wcwidth-0.1.7-py2.py3-none-any.whl
+Collecting attrs>=17.4.0
+  Downloading https://files.pythonhosted.org/packages/a2/db/4313ab3be961f7a763066401fb77f7748373b6094076ae2bda2806988af6/attrs-19.3.0-py2.py3-none-any.whl
+Collecting pluggy<1.0,>=0.12
+  Downloading https://files.pythonhosted.org/packages/92/c7/48439f7d5fd6bddb4c04b850bb862b42e3e2b98570040dfaf68aedd8114b/pluggy-0.13.0-py2.py3-none-any.whl
+Collecting atomicwrites>=1.0
+  Downloading https://files.pythonhosted.org/packages/52/90/6155aa926f43f2b2a22b01be7241be3bfd1ceaf7d0b3267213e8127d41f4/atomicwrites-1.3.0-py2.py3-none-any.whl
+Collecting packaging
+  Downloading https://files.pythonhosted.org/packages/cf/94/9672c2d4b126e74c4496c6b3c58a8b51d6419267be9e70660ba23374c875/packaging-19.2-py2.py3-none-any.whl
+Collecting zipp>=0.5
+  Downloading https://files.pythonhosted.org/packages/74/3d/1ee25a26411ba0401b43c6376d2316a71addcc72ef8690b101b4ea56d76a/zipp-0.6.0-py2.py3-none-any.whl
+Requirement already satisfied: six in /usr/local/lib/python3.6/site-packages (from packaging->pytest==5.1.1->-r src/requirements.txt (line 18)) (1.12.0)
+Collecting pyparsing>=2.0.2
+  Downloading https://files.pythonhosted.org/packages/a3/c4/7828cf9e71ce8fbd43c1e502f3fdd0498f069fcf9d1c268205ce278ae201/pyparsing-2.4.4-py2.py3-none-any.whl (67kB)
+Installing collected packages: numpy, scipy, scikit-learn, joblib, more-itertools, zipp, importlib-metadata, py, wcwidth, attrs, pluggy, atomicwrites, pyparsing, packaging, pytest
+Successfully installed atomicwrites-1.3.0 attrs-19.3.0 importlib-metadata-0.23 joblib-0.13.2 more-itertools-7.2.0 numpy-1.17.3 packaging-19.2 pluggy-0.13.0 py-1.8.0 pyparsing-2.4.4 pytest-5.1.1 scikit-learn-0.20.3 scipy-1.3.1 wcwidth-0.1.7 zipp-0.6.0
+(cd src && \
+	pytest -s --verbose -W ignore --log-level=INFO 2>&1)
+============================= test session starts ==============================
+platform linux -- Python 3.6.0, pytest-5.1.1, py-1.8.0, pluggy-0.13.0 -- /usr/local/bin/python3.6
+cachedir: .pytest_cache
+rootdir: /
+collecting ... collected 1 item
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-create-effective-pipeline[0m
-error: failed to create effective pipeline for pull request: validation failed for Pipeline: step names within a stage must be unique: stages[1].steps
-The following step names in the stage promote are used more than once: helm-release
-[31m
-Pipeline failed on stage 'meta-pipeline' : container 'step-create-effective-pipeline'. The execution of the pipeline has stopped.[0m
+test_model.py::test_model PASSED
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-credential-initializer-mch8m[0m
-{"level":"warn","ts":1573145140.926673,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
-{"level":"info","ts":1573145140.9286404,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+============================== 1 passed in 1.34s ===============================
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-working-dir-initializer-t9j66[0m
-{"level":"warn","ts":1573145141.8529537,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
-{"level":"info","ts":1573145141.857519,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-tests[0m and container [32mstep-release-end-to-end-tests[0m
+Starting Docker: docker.
+cat: VERSION: No such file or directory
+Makefile:10: warning: overriding recipe for target 'make'
+Makefile:7: warning: ignoring old recipe for target 'make'
+Makefile:14: warning: overriding recipe for target 'make'
+Makefile:10: warning: ignoring old recipe for target 'make'
+kind create cluster --config integration/kind_config.yaml
+Creating cluster "kind" ...
+ • Ensuring node image (kindest/node:v1.15.3) 🖼  ...
+ ✓ Ensuring node image (kindest/node:v1.15.3) 🖼
+ • Preparing nodes 📦📦  ...
+ ✓ Preparing nodes 📦📦
+ • Creating kubeadm config 📜  ...
+ ✓ Creating kubeadm config 📜
+ • Starting control-plane 🕹️  ...
+ ✓ Starting control-plane 🕹️
+ • Installing CNI 🔌  ...
+ ✓ Installing CNI 🔌
+ • Installing StorageClass 💾  ...
+ ✓ Installing StorageClass 💾
+ • Joining worker nodes 🚜  ...
+ ✓ Joining worker nodes 🚜
+Cluster creation complete. You can now use the cluster with:
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-place-tools[0m
+export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+kubectl cluster-info
+cat: VERSION: No such file or directory
+Makefile:10: warning: overriding recipe for target 'make'
+Makefile:7: warning: ignoring old recipe for target 'make'
+Makefile:14: warning: overriding recipe for target 'make'
+Makefile:10: warning: ignoring old recipe for target 'make'
+kubectl -n kube-system create sa tiller
+serviceaccount/tiller created
+kubectl create clusterrolebinding tiller --clusterrole cluster-***** --serviceaccount=kube-system:tiller
+clusterrolebinding.rbac.authorization.k8s.io/tiller created
+helm init --service-account tiller
+Creating /builder/home/.helm 
+Creating /builder/home/.helm/repository 
+Creating /builder/home/.helm/repository/cache 
+Creating /builder/home/.helm/repository/local 
+Creating /builder/home/.helm/plugins 
+Creating /builder/home/.helm/starters 
+Creating /builder/home/.helm/cache/archive 
+Creating /builder/home/.helm/repository/repositories.yaml 
+Adding stable repo with URL: https://kubernetes-charts.storage.googleapis.com 
+Adding local repo with URL: http://127.0.0.1:8879/charts 
+$HELM_HOME has been configured at /builder/home/.helm.
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-git-source-meta-seldonio-sig-mlops-seldon-b58r7[0m
-{"level":"warn","ts":1573145146.9767683,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
-{"level":"info","ts":1573145148.762944,"logger":"fallback-logger","caller":"git/git.go:102","msg":"Successfully cloned https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x.git @ bb3dc98b181af67ee91b2222641f996a3dc27f71 in path /workspace/source"}
+Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-git-merge[0m
-Using SHAs from PULL_REFS=master:bb3dc98b181af67ee91b2222641f996a3dc27f71
-WARNING: no SHAs to merge, falling back to initial cloned commit
+Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
+To prevent this, run `helm init` with the --tiller-tls-verify flag.
+For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
+kubectl rollout status deploy/tiller-deploy -n kube-system
+Waiting for deployment "tiller-deploy" rollout to finish: 0 of 1 updated replicas are available...
+deployment "tiller-deploy" successfully rolled out
+helm install stable/ambassador -f integration/ambassador_values.yaml --name ambassador --set crds.keep=false --namespace seldon --set replicaCount=1
+NAME:   ambassador
+LAST DEPLOYED: Sat Nov  9 13:52:36 2019
+NAMESPACE: seldon
+STATUS: DEPLOYED
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-merge-pull-refs[0m
-SKIP merge-pull-refs: Nothing to merge
+RESOURCES:
+==> v1/Deployment
+NAME        READY  UP-TO-DATE  AVAILABLE  AGE
+ambassador  0/1    1           0          1s
 
-Showing logs for build [32mmeta-seldonio-sig-mlops-seldon-g5qcr-24[0m stage [32mmeta-pipeline[0m and container [32mstep-create-effective-pipeline[0m
-error: failed to create effective pipeline for pull request: validation failed for Pipeline: step names within a stage must be unique: stages[1].steps
-The following step names in the stage promote are used more than once: helm-release
-[31m
-Pipeline failed on stage 'meta-pipeline' : container 'step-create-effective-pipeline'. The execution of the pipeline has stopped.[0m
+==> v1/Pod(related)
+NAME                         READY  STATUS             RESTARTS  AGE
+ambassador-558bb98fff-gfvwp  0/1    ContainerCreating  0         1s
+
+==> v1/Service
+NAME              TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)       AGE
+ambassador        NodePort   10.107.37.36   <none>       80:30080/TCP  1s
+ambassador-*****  ClusterIP  10.96.121.204  <none>       8877/TCP      1s
+
+==> v1/ServiceAccount
+NAME        SECRETS  AGE
+ambassador  1        1s
+
+==> v1beta1/ClusterRole
+NAME             AGE
+ambassador       1s
+ambassador-crds  1s
+
+==> v1beta1/ClusterRoleBinding
+NAME             AGE
+ambassador       1s
+ambassador-crds  1s
+
+
+NOTES:
+Congratulations! You've successfully installed Ambassador.
+
+For help, visit our Slack at https://d6e.co/slack or view the documentation online at https://www.getambassador.io.
+
+To get the IP address of Ambassador, run the following commands:
+  export NODE_PORT=$(kubectl get --namespace seldon -o jsonpath="{.spec.ports[0].nodePort}" services ambassador)
+  export NODE_IP=$(kubectl get nodes --namespace seldon -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+
+kubectl rollout status deployment.apps/ambassador --namespace seldon
+Waiting for deployment "ambassador" rollout to finish: 0 of 1 updated replicas are available...
+deployment "ambassador" successfully rolled out
+helm install seldon-core-operator --name seldon-core-operator --repo https://storage.googleapis.com/seldon-charts --namespace seldon
+NAME:   seldon-core-operator
+LAST DEPLOYED: Sat Nov  9 13:54:07 2019
+NAMESPACE: seldon
+STATUS: DEPLOYED
+
+RESOURCES:
+==> v1/ClusterRole
+NAME                     AGE
+seldon-manager-css-role  4s
+seldon-manager-role      4s
+seldon-manager-sas-role  4s
+seldon-proxy-role        4s
+
+==> v1/ClusterRoleBinding
+NAME                            AGE
+seldon-manager-css-rolebinding  4s
+seldon-manager-rolebinding      4s
+seldon-manager-sas-rolebinding  4s
+seldon-proxy-rolebinding        4s
+
+==> v1/ConfigMap
+NAME           DATA  AGE
+seldon-config  1     5s
+
+==> v1/Deployment
+NAME                       READY  UP-TO-DATE  AVAILABLE  AGE
+seldon-controller-manager  0/1    1           0          4s
+
+==> v1/Pod(related)
+NAME                                        READY  STATUS             RESTARTS  AGE
+seldon-controller-manager-85d65bbcb7-xbxs5  0/1    ContainerCreating  0         4s
+
+==> v1/Role
+NAME                         AGE
+seldon-leader-election-role  4s
+seldon-manager-cm-role       4s
+
+==> v1/RoleBinding
+NAME                                AGE
+seldon-leader-election-rolebinding  4s
+seldon-manager-cm-rolebinding       4s
+
+==> v1/Secret
+NAME                        TYPE               DATA  AGE
+seldon-webhook-server-cert  kubernetes.io/tls  3     5s
+
+==> v1/Service
+NAME                                       TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)   AGE
+seldon-controller-manager-metrics-service  ClusterIP  10.97.185.132   <none>       8443/TCP  4s
+seldon-webhook-service                     ClusterIP  10.109.183.175  <none>       443/TCP   4s
+
+==> v1/ServiceAccount
+NAME            SECRETS  AGE
+seldon-manager  1        5s
+
+==> v1beta1/CustomResourceDefinition
+NAME                                         AGE
+seldondeployments.machinelearning.seldon.io  5s
+
+==> v1beta1/MutatingWebhookConfiguration
+NAME                                   AGE
+seldon-mutating-webhook-configuration  4s
+
+==> v1beta1/ValidatingWebhookConfiguration
+NAME                                     AGE
+seldon-validating-webhook-configuration  4s
+
+
+kubectl rollout status -n seldon deployment/seldon-controller-manager
+Waiting for deployment "seldon-controller-manager" rollout to finish: 0 of 1 updated replicas are available...
+deployment "seldon-controller-manager" successfully rolled out
+kubectl create namespace seldon || echo "Namespace seldon already exists"
+Error from server (AlreadyExists): namespaces "seldon" already exists
+Namespace seldon already exists
+kubectl config set-context $(kubectl config current-context) --namespace=seldon
+Context "kubernetes-*****@kind" modified.
+helm install charts/sklearn-model-server --namespace seldon --name sklearn-model-server
+NAME:   sklearn-model-server
+LAST DEPLOYED: Sat Nov  9 13:54:17 2019
+NAMESPACE: seldon
+STATUS: DEPLOYED
+
+RESOURCES:
+==> v1alpha2/SeldonDeployment
+NAME                  AGE
+sklearn-model-server  0s
+
+
+NOTES:
+Get the application URL by running these commands:
+
+kubectl get ingress sklearn-model-server-sklearn-model-server
+
+kubectl rollout status -n seldon deploy/sklearn-model-server-default-cbb4caa
+Waiting for deployment "sklearn-model-server-default-cbb4caa" rollout to finish: 0 of 1 updated replicas are available...
+deployment "sklearn-model-server-default-cbb4caa" successfully rolled out
+cat: VERSION: No such file or directory
+Makefile:10: warning: overriding recipe for target 'make'
+Makefile:7: warning: ignoring old recipe for target 'make'
+Makefile:14: warning: overriding recipe for target 'make'
+Makefile:10: warning: ignoring old recipe for target 'make'
+pip install -r integration/requirements-dev.txt
+Collecting pytest
+  Downloading https://files.pythonhosted.org/packages/93/16/f6dec5178f5f4141e80dfc4812a9aba88f5f29ca881f174ab1851181d016/pytest-5.2.2-py3-none-any.whl (227kB)
+Collecting retrying
+  Downloading https://files.pythonhosted.org/packages/44/ef/beae4b4ef80902f22e3af073397f079c96969c69b2c7d52a57ea9ae61c9d/retrying-1.3.3.tar.gz
+Collecting seldon_core
+  Downloading https://files.pythonhosted.org/packages/d4/05/d345090a52571177ec53a153679730f0e090b0824fe6a4d11ddd9077f20f/seldon_core-0.5.0.3-py3-none-any.whl (60kB)
+Collecting numpy
+  Using cached https://files.pythonhosted.org/packages/0e/46/ae6773894f7eacf53308086287897ec568eac9768918d913d5b9d366c5db/numpy-1.17.3-cp36-cp36m-manylinux1_x86_64.whl
+Collecting pluggy<1.0,>=0.12
+  Using cached https://files.pythonhosted.org/packages/92/c7/48439f7d5fd6bddb4c04b850bb862b42e3e2b98570040dfaf68aedd8114b/pluggy-0.13.0-py2.py3-none-any.whl
+Collecting packaging
+  Using cached https://files.pythonhosted.org/packages/cf/94/9672c2d4b126e74c4496c6b3c58a8b51d6419267be9e70660ba23374c875/packaging-19.2-py2.py3-none-any.whl
+Collecting importlib-metadata>=0.12; python_version < "3.8"
+  Using cached https://files.pythonhosted.org/packages/f6/d2/40b3fa882147719744e6aa50ac39cf7a22a913cbcba86a0371176c425a3b/importlib_metadata-0.23-py2.py3-none-any.whl
+Collecting py>=1.5.0
+  Using cached https://files.pythonhosted.org/packages/76/bc/394ad449851729244a97857ee14d7cba61ddb268dce3db538ba2f2ba1f0f/py-1.8.0-py2.py3-none-any.whl
+Collecting attrs>=17.4.0
+  Using cached https://files.pythonhosted.org/packages/a2/db/4313ab3be961f7a763066401fb77f7748373b6094076ae2bda2806988af6/attrs-19.3.0-py2.py3-none-any.whl
+Collecting atomicwrites>=1.0
+  Using cached https://files.pythonhosted.org/packages/52/90/6155aa926f43f2b2a22b01be7241be3bfd1ceaf7d0b3267213e8127d41f4/atomicwrites-1.3.0-py2.py3-none-any.whl
+Collecting wcwidth
+  Using cached https://files.pythonhosted.org/packages/7e/9f/526a6947247599b084ee5232e4f9190a38f398d7300d866af3ab571a5bfe/wcwidth-0.1.7-py2.py3-none-any.whl
+Collecting more-itertools>=4.0.0
+  Using cached https://files.pythonhosted.org/packages/45/dc/3241eef99eb45f1def35cf93af35d1cf9ef4c0991792583b8f33ea41b092/more_itertools-7.2.0-py3-none-any.whl
+Requirement already satisfied: six>=1.7.0 in /usr/local/lib/python3.6/site-packages (from retrying->-r integration/requirements-dev.txt (line 2)) (1.12.0)
+Requirement already satisfied: grpcio<2.0.0 in /usr/local/lib/python3.6/site-packages (from seldon_core->-r integration/requirements-dev.txt (line 3)) (1.24.3)
+Collecting opentracing<2.3.0,>=2.2.0
+  Downloading https://files.pythonhosted.org/packages/94/9f/289424136addf621fb4c75624ef9a3a80e8575da3993a87950c57e93217e/opentracing-2.2.0.tar.gz (47kB)
+Collecting redis<3.0.0
+  Downloading https://files.pythonhosted.org/packages/3b/f6/7a76333cf0b9251ecf49efff635015171843d9b977e4ffcf59f9c4428052/redis-2.10.6-py2.py3-none-any.whl (64kB)
+Collecting pyaml<20.0.0
+  Downloading https://files.pythonhosted.org/packages/33/1a/936074f3492156693fc9e471269fc5747fa3b7d9d7f8a33af054f6b24066/pyaml-19.4.1-py2.py3-none-any.whl
+Collecting requests<3.0.0
+  Downloading https://files.pythonhosted.org/packages/51/bd/23c926cd341ea6b7dd0b2a00aba99ae0f828be89d72b2190f27c11d4b7fb/requests-2.22.0-py2.py3-none-any.whl (57kB)
+Requirement already satisfied: protobuf<4.0.0 in /usr/local/lib/python3.6/site-packages (from seldon_core->-r integration/requirements-dev.txt (line 3)) (3.10.0)
+Collecting Flask-cors<4.0.0
+  Downloading https://files.pythonhosted.org/packages/78/38/e68b11daa5d613e3a91e4bf3da76c94ac9ee0d9cd515af9c1ab80d36f709/Flask_Cors-3.0.8-py2.py3-none-any.whl
+Collecting Flask<2.0.0
+  Downloading https://files.pythonhosted.org/packages/9b/93/628509b8d5dc749656a9641f4caf13540e2cdec85276964ff8f43bbb1d3b/Flask-1.1.1-py2.py3-none-any.whl (94kB)
+Collecting gunicorn<19.10.0,>=19.9.0
+  Downloading https://files.pythonhosted.org/packages/8c/da/b8dd8deb741bff556db53902d4706774c8e1e67265f69528c14c003644e6/gunicorn-19.9.0-py2.py3-none-any.whl (112kB)
+Collecting Flask-OpenTracing<1.2.0,>=1.1.0
+  Downloading https://files.pythonhosted.org/packages/58/6c/6417701ba5ecc8854670c6db3207bcc3e5fbc96289a7cb18d5516d99a1c6/Flask-OpenTracing-1.1.0.tar.gz
+Collecting minio<6.0.0,>=4.0.9
+  Downloading https://files.pythonhosted.org/packages/78/09/fa848f67bb4aeb60b0399fe275cb2049ecc25bbc36477f173df054411f52/minio-5.0.4-py2.py3-none-any.whl (62kB)
+Requirement already satisfied: setuptools>=41.0.0 in /usr/local/lib/python3.6/site-packages (from seldon_core->-r integration/requirements-dev.txt (line 3)) (41.4.0)
+Collecting azure-storage-blob<3.0.0,>=2.0.1
+  Downloading https://files.pythonhosted.org/packages/3e/84/610f379b46d7d3c2d48eadeed6a12b6d46a43100fea70534f5992d0ac996/azure_storage_blob-2.1.0-py2.py3-none-any.whl (88kB)
+Collecting grpcio-opentracing<1.2.0,>=1.1.4
+  Downloading https://files.pythonhosted.org/packages/db/82/2fcad380697c3dab25de76ee590bcab3eb9bbfb4add916044d7e83ec2b10/grpcio_opentracing-1.1.4-py3-none-any.whl
+Collecting jaeger-client<4.2.0,>=4.1.0
+  Downloading https://files.pythonhosted.org/packages/f1/da/569a4f1bc3d0c412c7f903053f09ef62fa10949374ca90bc852b22dd3860/jaeger-client-4.1.0.tar.gz (80kB)
+Collecting flatbuffers<2.0.0
+  Downloading https://files.pythonhosted.org/packages/c9/84/adf5837f96c39990bc55afdfddf460b38b4562f50341359afa32e4a98de7/flatbuffers-1.11-py2.py3-none-any.whl
+Collecting pyparsing>=2.0.2
+  Using cached https://files.pythonhosted.org/packages/a3/c4/7828cf9e71ce8fbd43c1e502f3fdd0498f069fcf9d1c268205ce278ae201/pyparsing-2.4.4-py2.py3-none-any.whl
+Collecting zipp>=0.5
+  Using cached https://files.pythonhosted.org/packages/74/3d/1ee25a26411ba0401b43c6376d2316a71addcc72ef8690b101b4ea56d76a/zipp-0.6.0-py2.py3-none-any.whl
+Requirement already satisfied: PyYAML in /usr/local/lib/python3.6/site-packages (from pyaml<20.0.0->seldon_core->-r integration/requirements-dev.txt (line 3)) (5.1.2)
+Collecting idna<2.9,>=2.5
+  Downloading https://files.pythonhosted.org/packages/14/2c/cd551d81dbe15200be1cf41cd03869a46fe7226e7450af7a6545bfc474c9/idna-2.8-py2.py3-none-any.whl (58kB)
+Collecting chardet<3.1.0,>=3.0.2
+  Downloading https://files.pythonhosted.org/packages/bc/a9/01ffebfb562e4274b6487b4bb1ddec7ca55ec7510b22e4c51f14098443b8/chardet-3.0.4-py2.py3-none-any.whl (133kB)
+Collecting certifi>=2017.4.17
+  Downloading https://files.pythonhosted.org/packages/18/b0/8146a4f8dd402f60744fa380bc73ca47303cccf8b9190fd16a827281eac2/certifi-2019.9.11-py2.py3-none-any.whl (154kB)
+Collecting urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1
+  Downloading https://files.pythonhosted.org/packages/e0/da/55f51ea951e1b7c63a579c09dd7db825bb730ec1fe9c0180fc77bfb31448/urllib3-1.25.6-py2.py3-none-any.whl (125kB)
+Collecting click>=5.1
+  Downloading https://files.pythonhosted.org/packages/fa/37/45185cb5abbc30d7257104c434fe0b07e5a195a6847506c074527aa599ec/Click-7.0-py2.py3-none-any.whl (81kB)
+Collecting Werkzeug>=0.15
+  Downloading https://files.pythonhosted.org/packages/ce/42/3aeda98f96e85fd26180534d36570e4d18108d62ae36f87694b476b83d6f/Werkzeug-0.16.0-py2.py3-none-any.whl (327kB)
+Collecting itsdangerous>=0.24
+  Downloading https://files.pythonhosted.org/packages/76/ae/44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e/itsdangerous-1.1.0-py2.py3-none-any.whl
+Collecting Jinja2>=2.10.1
+  Downloading https://files.pythonhosted.org/packages/65/e0/eb35e762802015cab1ccee04e8a277b03f1d8e53da3ec3106882ec42558b/Jinja2-2.10.3-py2.py3-none-any.whl (125kB)
+Collecting pytz
+  Downloading https://files.pythonhosted.org/packages/e7/f9/f0b53f88060247251bf481fa6ea62cd0d25bf1b11a87888e53ce5b7c8ad2/pytz-2019.3-py2.py3-none-any.whl (509kB)
+Collecting future
+  Downloading https://files.pythonhosted.org/packages/45/0b/38b06fd9b92dc2b68d58b75f900e97884c45bedd2ff83203d933cf5851c9/future-0.18.2.tar.gz (829kB)
+Collecting python-dateutil
+  Downloading https://files.pythonhosted.org/packages/d4/70/d60450c3dd48ef87586924207ae8907090de0b306af2bce5d134d78615cb/python_dateutil-2.8.1-py2.py3-none-any.whl (227kB)
+Collecting azure-common>=1.1.5
+  Downloading https://files.pythonhosted.org/packages/00/55/a703923c12cd3172d5c007beda0c1a34342a17a6a72779f8a7c269af0cd6/azure_common-1.1.23-py2.py3-none-any.whl
+Collecting azure-storage-common~=2.1
+  Downloading https://files.pythonhosted.org/packages/6b/a0/6794b318ce0118d1a4053bdf0149a60807407db9b710354f2b203c2f5975/azure_storage_common-2.1.0-py2.py3-none-any.whl (47kB)
+Collecting threadloop<2,>=1
+  Downloading https://files.pythonhosted.org/packages/d3/1d/8398c1645b97dc008d3c658e04beda01ede3d90943d40c8d56863cf891bd/threadloop-1.0.2.tar.gz
+Collecting thrift
+  Downloading https://files.pythonhosted.org/packages/c6/b4/510617906f8e0c5660e7d96fbc5585113f83ad547a3989b80297ac72a74c/thrift-0.11.0.tar.gz (52kB)
+Collecting tornado<6,>=4.3
+  Downloading https://files.pythonhosted.org/packages/e6/78/6e7b5af12c12bdf38ca9bfe863fcaf53dc10430a312d0324e76c1e5ca426/tornado-5.1.1.tar.gz (516kB)
+Collecting MarkupSafe>=0.23
+  Downloading https://files.pythonhosted.org/packages/b2/5f/23e0023be6bb885d00ffbefad2942bc51a620328ee910f64abe5a8d18dd1/MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl
+Collecting cryptography
+  Downloading https://files.pythonhosted.org/packages/ca/9a/7cece52c46546e214e10811b36b2da52ce1ea7fa203203a629b8dfadad53/cryptography-2.8-cp34-abi3-manylinux2010_x86_64.whl (2.3MB)
+Collecting cffi!=1.11.3,>=1.8
+  Downloading https://files.pythonhosted.org/packages/49/72/0d42f94fe94afa8030350c26e9d787219f3f008ec9bf6b86c66532b29236/cffi-1.13.2-cp36-cp36m-manylinux1_x86_64.whl (397kB)
+Collecting pycparser
+  Downloading https://files.pythonhosted.org/packages/68/9e/49196946aee219aead1290e00d1e7fdeab8567783e83e1b9ab5585e6206a/pycparser-2.19.tar.gz (158kB)
+Installing collected packages: more-itertools, zipp, importlib-metadata, pluggy, pyparsing, packaging, py, attrs, atomicwrites, wcwidth, pytest, retrying, opentracing, redis, pyaml, idna, chardet, certifi, urllib3, requests, click, Werkzeug, itsdangerous, MarkupSafe, Jinja2, Flask, Flask-cors, numpy, gunicorn, Flask-OpenTracing, pytz, future, python-dateutil, minio, azure-common, pycparser, cffi, cryptography, azure-storage-common, azure-storage-blob, grpcio-opentracing, tornado, threadloop, thrift, jaeger-client, flatbuffers, seldon-core
+    Running setup.py install for retrying: started
+    Running setup.py install for retrying: finished with status 'done'
+    Running setup.py install for opentracing: started
+    Running setup.py install for opentracing: finished with status 'done'
+    Running setup.py install for Flask-OpenTracing: started
+    Running setup.py install for Flask-OpenTracing: finished with status 'done'
+    Running setup.py install for future: started
+    Running setup.py install for future: finished with status 'done'
+    Running setup.py install for pycparser: started
+    Running setup.py install for pycparser: finished with status 'done'
+    Running setup.py install for tornado: started
+    Running setup.py install for tornado: finished with status 'done'
+    Running setup.py install for threadloop: started
+    Running setup.py install for threadloop: finished with status 'done'
+    Running setup.py install for thrift: started
+    Running setup.py install for thrift: finished with status 'done'
+    Running setup.py install for jaeger-client: started
+    Running setup.py install for jaeger-client: finished with status 'done'
+Successfully installed Flask-1.1.1 Flask-OpenTracing-1.1.0 Flask-cors-3.0.8 Jinja2-2.10.3 MarkupSafe-1.1.1 Werkzeug-0.16.0 atomicwrites-1.3.0 attrs-19.3.0 azure-common-1.1.23 azure-storage-blob-2.1.0 azure-storage-common-2.1.0 certifi-2019.9.11 cffi-1.13.2 chardet-3.0.4 click-7.0 cryptography-2.8 flatbuffers-1.11 future-0.18.2 grpcio-opentracing-1.1.4 gunicorn-19.9.0 idna-2.8 importlib-metadata-0.23 itsdangerous-1.1.0 jaeger-client-4.1.0 minio-5.0.4 more-itertools-7.2.0 numpy-1.17.3 opentracing-2.2.0 packaging-19.2 pluggy-0.13.0 py-1.8.0 pyaml-19.4.1 pycparser-2.19 pyparsing-2.4.4 pytest-5.2.2 python-dateutil-2.8.1 pytz-2019.3 redis-2.10.6 requests-2.22.0 retrying-1.3.3 seldon-core-0.5.0.3 threadloop-1.0.2 thrift-0.11.0 tornado-5.1.1 urllib3-1.25.6 wcwidth-0.1.7 zipp-0.6.0
+cat: VERSION: No such file or directory
+Makefile:10: warning: overriding recipe for target 'make'
+Makefile:7: warning: ignoring old recipe for target 'make'
+Makefile:14: warning: overriding recipe for target 'make'
+Makefile:10: warning: ignoring old recipe for target 'make'
+(cd integration && \
+	pytest -s --verbose -W ignore --log-level=INFO 2>&1)
+============================= test session starts ==============================
+platform linux -- Python 3.6.0, pytest-5.2.2, py-1.8.0, pluggy-0.13.0 -- /usr/local/bin/python3.6
+cachedir: .pytest_cache
+rootdir: /
+collecting ... collected 1 item
+
+test_e2e_sklearn_server.py::test_sklearn_server PASSED
+
+============================== 1 passed in 2.05s ===============================
+cat: VERSION: No such file or directory
+Makefile:10: warning: overriding recipe for target 'make'
+Makefile:7: warning: ignoring old recipe for target 'make'
+Makefile:14: warning: overriding recipe for target 'make'
+Makefile:10: warning: ignoring old recipe for target 'make'
+kind delete cluster
+Deleting cluster "kind" ...
+$KUBECONFIG is still set to use /builder/home/.kube/kind-config-kind even though that file has been deleted, remember to unset it
+Stopping Docker: dockerProgram process in pidfile '/var/run/docker-ssd.pid', 1 process(es), refused to die.
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-tests[0m and container [32mstep-source-mkdir-seldonio-sig-mlops-seldon-jenki-49955[0m
+{"level":"warn","ts":1573307874.9912946,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573307875.0551577,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /pvc/release-tests/workspace\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-tests[0m and container [32mstep-source-copy-seldonio-sig-mlops-seldon-jenki-ldctc[0m
+{"level":"warn","ts":1573307875.3298085,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573307875.6637166,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"cp -r /workspace/source/. /pvc/release-tests/workspace\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-promote[0m and container [32mstep-credential-initializer-m29xw[0m
+{"level":"warn","ts":1573307884.1738844,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/master\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1573307884.1753235,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-promote[0m and container [32mstep-working-dir-initializer-8vzn7[0m
+{"level":"warn","ts":1573307885.0409591,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573307885.0553515,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-promote[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-promote[0m and container [32mstep-create-dir-workspace-m7wfp[0m
+{"level":"warn","ts":1573307892.1888564,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573307892.1945128,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"mkdir -p /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-promote[0m and container [32mstep-source-copy-workspace-q679h[0m
+{"level":"warn","ts":1573307892.5193746,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1573307892.6473002,"logger":"fallback-logger","caller":"bash/main.go:65","msg":"Successfully executed command \"cp -r /pvc/release-tests/workspace/. /workspace/source\""}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-promote[0m and container [32mstep-next-version[0m
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-promote[0m and container [32mstep-tag-version[0m
+Updating chart version in charts/sklearn-model-server/Chart.yaml to 0.0.56
+Tag v0.0.56 created and pushed to remote origin
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-promote[0m and container [32mstep-release-changelog[0m
+Converted /workspace/source/charts/sklearn-model-server to an unshallow repository
+Generating change log from git ref b3c2065011053af7a636d094faf5fda40c1e879a => 93ad864a8b20da691b380f30e386120cd996bc97
+WARNING: No release found for SeldonIO/sig-mlops-seldon-jenkins-x and tag v0.0.56 so creating a new release
+Updated the release information at https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x/releases/tag/v0.0.56
+generated: /workspace/source/charts/sklearn-model-server/templates/release.yaml
+Created Release sig-mlops-seldon-jenkins-x-0-0-56 resource in namespace **
+Updating PipelineActivity seldonio-sig-mlops-seldon-jenkins-x-master-24 with version 0.0.56
+Updated PipelineActivities seldonio-sig-mlops-seldon-jenkins-x-master-24 with release notes URL: https://github.com/SeldonIO/sig-mlops-seldon-jenkins-x/releases/tag/v0.0.56
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-promote[0m and container [32mstep-release-publish-chart[0m
+WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
+Adding missing Helm repo: storage.googleapis.com https://storage.googleapis.com/chartmuseum.jenkins-x.io
+Read credentials for https://storage.googleapis.com/chartmuseum.jenkins-x.io from vault helm/repos
+Successfully added Helm repository storage.googleapis.com.
+Adding missing Helm repo: jenkins-x-chartmuseum http://jenkins-x-chartmuseum:8080
+Read credentials for http://jenkins-x-chartmuseum:8080 from vault helm/repos
+Successfully added Helm repository jenkins-x-chartmuseum.
+WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
+Uploading chart file sklearn-model-server-0.0.56.tgz to http://jenkins-x-chartmuseum:8080/api/charts
+Received 201 response: {"saved":true}
+
+Showing logs for build [32mseldonio-sig-mlops-seldon-jenki-7chm5-24[0m stage [32mrelease-promote[0m and container [32mstep-release-promote-staging[0m
+WARNING: prow based install so skip waiting for the merge of Pull Requests to go green as currently there is an issue with gettingstatuses from the PR, see https://github.com/jenkins-x/**/issues/2410
+Promoting app sklearn-model-server version 0.0.56 to namespace **-staging
+Created Pull Request: https://github.com/SeldonIO/environment-**-production-cluster-staging/pull/6
+Pull Request https://github.com/SeldonIO/environment-**-production-cluster-staging/pull/6 is merged at sha 92767fb8a58bfbc5d62b3e4f753913715a039f65
+Pull Request merged but we are not waiting for the update pipeline to complete!
+WARNING: Could not find the service URL in namespace **-staging for names sklearn-model-server, **-sklearn-model-server, **-staging-sklearn-model-server
