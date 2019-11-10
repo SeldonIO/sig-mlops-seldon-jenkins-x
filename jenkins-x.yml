@@ -1,41 +1,14 @@
 buildPack: none
 pipelineConfig:
-  agent:
-    image: seldonio/core-builder:0.4
-  containerOptions:
-    volumeMounts:
-      - mountPath: /lib/modules
-        name: modules
-        readOnly: true
-      - mountPath: /sys/fs/cgroup
-        name: cgroup
-      - name: dind-storage
-        mountPath: /var/lib/docker
-      - mountPath: /builder/home/.docker
-        name: jenkins-docker-config-volume
-    securityContext:
-      privileged: true
+  overrides:
+  - pipeline: pullRequest
+  - pipeline: release
+  - pipeline: feature
   pipelines:
     release:
       pipeline:
-        options:
-          volumes:
-            - name: modules
-              hostPath:
-                path: /lib/modules
-                type: Directory
-            - name: cgroup
-              hostPath:
-                path: /sys/fs/cgroup
-                type: Directory
-            - name: dind-storage
-              emptyDir: {}
-            - name: jenkins-docker-config-volume
-              secret:
-                items:
-                - key: config.json
-                  path: config.json
-                secretName: jenkins-docker-cfg
+        agent:
+          image: seldonio/core-builder:0.4
         stages:
         - name: release-tests
           steps:
@@ -62,9 +35,20 @@ pipelineConfig:
             sh: "cd charts/seldon-model-server && jx step helm release --dir ."
           - name: release-promote-staging
             sh: "cd charts/seldon-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ../../VERSION)"
-    pullRequest:
-      pipeline:
         options:
+          containerOptions:
+            volumeMounts:
+              - mountPath: /lib/modules
+                name: modules
+                readOnly: true
+              - mountPath: /sys/fs/cgroup
+                name: cgroup
+              - name: dind-storage
+                mountPath: /var/lib/docker
+              - mountPath: /builder/home/.docker
+                name: jenkins-docker-config-volume
+            securityContext:
+              privileged: true
           volumes:
             - name: modules
               hostPath:
@@ -82,6 +66,10 @@ pipelineConfig:
                 - key: config.json
                   path: config.json
                 secretName: jenkins-docker-cfg
+    pullRequest:
+      pipeline:
+        agent:
+          image: seldonio/core-builder:0.4
         stages:
         - name: pr-tests
           steps:
@@ -102,3 +90,34 @@ pipelineConfig:
             sh: cd charts/preview && make preview
           - name: pr-deploy-preview
             sh: cd charts/preview && jx preview --app $APP_NAME --dir .
+        options:
+          containerOptions:
+            volumeMounts:
+              - mountPath: /lib/modules
+                name: modules
+                readOnly: true
+              - mountPath: /sys/fs/cgroup
+                name: cgroup
+              - name: dind-storage
+                mountPath: /var/lib/docker
+              - mountPath: /builder/home/.docker
+                name: jenkins-docker-config-volume
+            securityContext:
+              privileged: true
+          volumes:
+            - name: modules
+              hostPath:
+                path: /lib/modules
+                type: Directory
+            - name: cgroup
+              hostPath:
+                path: /sys/fs/cgroup
+                type: Directory
+            - name: dind-storage
+              emptyDir: {}
+            - name: jenkins-docker-config-volume
+              secret:
+                items:
+                - key: config.json
+                  path: config.json
+                secretName: jenkins-docker-cfg
