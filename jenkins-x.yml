@@ -1,12 +1,9 @@
 buildPack: none
 pipelineConfig:
   pipelines:
-    overrides:
-    - pipeline: pullRequest
-    - pipeline: release
-    - pipeline: feature
     release:
       pipeline:
+        replace: true
         agent:
           image: seldonio/core-builder:0.4
         stages:
@@ -68,6 +65,7 @@ pipelineConfig:
                 secretName: jenkins-docker-cfg
     pullRequest:
       pipeline:
+        replace: true
         agent:
           image: seldonio/core-builder:0.4
         stages:
