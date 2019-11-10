@@ -1,10 +1,10 @@
 buildPack: none
 pipelineConfig:
-  overrides:
-  - pipeline: pullRequest
-  - pipeline: release
-  - pipeline: feature
   pipelines:
+    overrides:
+    - pipeline: pullRequest
+    - pipeline: release
+    - pipeline: feature
     release:
       pipeline:
         agent:
