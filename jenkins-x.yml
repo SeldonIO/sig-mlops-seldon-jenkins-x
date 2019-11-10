@@ -15,26 +15,27 @@ pipelineConfig:
         name: jenkins-docker-config-volume
     securityContext:
       privileged: true
-  volumes:
-    - name: modules
-      hostPath:
-        path: /lib/modules
-        type: Directory
-    - name: cgroup
-      hostPath:
-        path: /sys/fs/cgroup
-        type: Directory
-    - name: dind-storage
-      emptyDir: {}
-    - name: jenkins-docker-config-volume
-      secret:
-        items:
-        - key: config.json
-          path: config.json
-        secretName: jenkins-docker-cfg
   pipelines:
     release:
       pipeline:
+        options:
+          volumes:
+            - name: modules
+              hostPath:
+                path: /lib/modules
+                type: Directory
+            - name: cgroup
+              hostPath:
+                path: /sys/fs/cgroup
+                type: Directory
+            - name: dind-storage
+              emptyDir: {}
+            - name: jenkins-docker-config-volume
+              secret:
+                items:
+                - key: config.json
+                  path: config.json
+                secretName: jenkins-docker-cfg
         stages:
         - name: release-tests
           steps:
@@ -63,6 +64,24 @@ pipelineConfig:
             sh: "cd charts/seldon-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ../../VERSION)"
     pullRequest:
       pipeline:
+        options:
+          volumes:
+            - name: modules
+              hostPath:
+                path: /lib/modules
+                type: Directory
+            - name: cgroup
+              hostPath:
+                path: /sys/fs/cgroup
+                type: Directory
+            - name: dind-storage
+              emptyDir: {}
+            - name: jenkins-docker-config-volume
+              secret:
+                items:
+                - key: config.json
+                  path: config.json
+                secretName: jenkins-docker-cfg
         stages:
         - name: pr-tests
           steps:
