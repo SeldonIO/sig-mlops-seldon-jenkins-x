@@ -1,7 +1,5 @@
 buildPack: none
 pipelineConfig:
-  overrides:
-  - pipeline: release
   pipelines:
     default:
       pipeline:
