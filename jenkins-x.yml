@@ -119,3 +119,4 @@ pipelineConfig:
                 - key: config.json
                   path: config.json
                 secretName: jenkins-docker-cfg
+
