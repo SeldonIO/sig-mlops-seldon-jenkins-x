@@ -1,4 +1,3 @@
-
 # End-to-end MLOps with Seldon Core and Jenkins X
 
 This tutorial provides an end-to-end hands-on tutorial that shows you how to build your own re-usable MLOps pipelines leveraging Seldon Core and Jenkins X. 
