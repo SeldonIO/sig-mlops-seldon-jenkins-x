@@ -38,10 +38,10 @@ pipelineConfig:
             args:
             - install_dev
             - test
-          - name: release-end-to-end-tests
-            command: bash
-            args:
-            - integration/kind_test_all.sh
+#          - name: release-end-to-end-tests
+#            command: bash
+#            args:
+#            - integration/kind_test_all.sh
         options:
           containerOptions:
             volumeMounts:
