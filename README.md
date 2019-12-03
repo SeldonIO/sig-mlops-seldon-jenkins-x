@@ -33,7 +33,7 @@ Now we want to start setting up our repo. For this we'll just leverage the MLOps
 
 
 ```python
-!jx create quickstart - -org "SeldonIO" - -project-name "mlops-deployment" - -filter "mlops-quickstart"
+!jx create quickstart --org "SeldonIO" --project-name "mlops-deployment" --filter "mlops-quickstart"
 ```
 
 What this command does is basically the following:
