@@ -14,8 +14,6 @@ pipelineConfig:
       pipeline: release
       stage: promote
       steps:
-      - name: tag-version
-        sh: "jx step tag --version $(cat VERSION)"
       - name: release-changelog
         sh: "cd charts/seldon-model-server && jx step changelog --batch-mode --version v$(cat ../../VERSION)"
       - name: release-publish-chart
@@ -27,6 +25,8 @@ pipelineConfig:
         steps:
         - name: next-version
           sh: "echo $(jx-release-version) > VERSION"
+        - name: tag-version
+          sh: "jx step tag --version $(cat VERSION)"
       pipeline:
         agent:
           image: seldonio/core-builder:0.4
