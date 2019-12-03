@@ -1,32 +1,7 @@
 buildPack: none
 pipelineConfig:
   pipelines:
-    overrides:
-    - name: preview-app
-      pipeline: pullRequest
-      stage: promote
-      steps:
-      - name: pr-build-preview
-        sh: cd charts/preview && make preview
-      - name: pr-deploy-preview
-        sh: cd charts/preview && jx preview --app $APP_NAME --dir .
-    - name: promote-app
-      pipeline: release
-      stage: promote
-      steps:
-      - name: release-changelog
-        sh: "cd charts/seldon-model-server && jx step changelog --batch-mode --version v$(cat ../../VERSION)"
-      - name: release-publish-chart
-        sh: "cd charts/seldon-model-server && jx step helm release --dir ."
-      - name: release-promote-staging
-        sh: "cd charts/seldon-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ../../VERSION)"
     release:
-      setVersion:
-        steps:
-        - name: next-version
-          sh: "echo $(jx-release-version) > VERSION"
-        - name: tag-version
-          sh: "jx step tag --version $(cat VERSION)"
       pipeline:
         agent:
           image: seldonio/core-builder:0.4
@@ -42,6 +17,20 @@ pipelineConfig:
 #            command: bash
 #            args:
 #            - integration/kind_test_all.sh
+        - name: release-promote
+          agent:
+            image: gcr.io/jenkinsxio/builder-go:2.0.916-264
+          - sh: "echo $(jx-release-version) > VERSION"
+            name: next-version
+          steps:
+          - sh: "jx step tag --version $(cat VERSION)"
+            name: tag-version
+          - name: release-changelog
+            sh: "cd charts/seldon-model-server && jx step changelog --batch-mode --version v$(cat ../../VERSION)"
+          - name: release-publish-chart
+            sh: "cd charts/seldon-model-server && jx step helm release --dir ."
+          - name: release-promote-staging
+            sh: "cd charts/seldon-model-server && jx promote -b --all-auto --timeout 1h --version $(cat ../../VERSION)"
         options:
           containerOptions:
             volumeMounts:
@@ -74,10 +63,6 @@ pipelineConfig:
                   path: config.json
                 secretName: jenkins-docker-cfg
     pullRequest:
-      setVersion:
-        steps:
-        - name: next-version
-          sh: "echo $(jx-release-version) > VERSION"
       pipeline:
         agent:
           image: seldonio/core-builder:0.4
@@ -93,6 +78,14 @@ pipelineConfig:
             command: bash
             args:
             - integration/kind_test_all.sh
+        - name: pr-preview
+          agent:
+            image: gcr.io/jenkinsxio/builder-go:2.0.916-264
+          steps:
+          - name: pr-build-preview
+            sh: cd charts/preview && make preview
+          - name: pr-deploy-preview
+            sh: cd charts/preview && jx preview --app $APP_NAME --dir .
         options:
           containerOptions:
             volumeMounts:
