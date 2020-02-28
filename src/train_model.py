@@ -2,7 +2,7 @@ from sklearn.datasets import fetch_20newsgroups
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
-impor numpy as np
+import numpy as np
 import joblib
 
 def fetch_data():
